@@ -1,5 +1,8 @@
 const { io } = require('socket.io-client');
-
+const http = require('http');
+http.createServer((req, res) => {
+    res.end('bot en ligne');
+}).listen(process.env.PORT || 3000);
 const SERVER_URL = 'https://s0urce.io';
 const MY_PLAYER_ID = '69bfe7652baa455bee3c111a';
 const CONNECT_SID = 's%3ArxlR5TH86FgITRd1ZUSkTmThQ1KL36wO.hSRiT7BOX%2Fdo2aOMY4x%2BT43EKls%2Bx31uMcVyYB6EkdQ';
