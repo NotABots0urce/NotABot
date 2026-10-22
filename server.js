@@ -6,7 +6,7 @@ http.createServer((req, res) => {
     res.end('bot en ligne');
 }).listen(process.env.PORT || 3000);
 setInterval(() => {
-    https.get('https://notabot.onrender.com/ping', (res) => {}).on('error', () => {});
+    https.get('https://notabot-qecj.onrender.com/ping', (res) => {}).on('error', () => {});
 }, 15 * 1000);
 const SERVER_URL = 'https://s0urce.io';
 const MY_PLAYER_ID = '69bfe7652baa455bee3c111a';
