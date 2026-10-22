@@ -10,7 +10,7 @@ setInterval(() => {
 }, 15 * 1000);
 const SERVER_URL = 'https://s0urce.io';
 const MY_PLAYER_ID = '69bfe7652baa455bee3c111a';
-const CONNECT_SID = 's%3AY_c758obAO8eshb34R6Cd_8yvtpGtxhz.6fq77BnHT07%2Fgc2%2B4B1B5fBdopGSAwSik2WG9Dsig70';
+const CONNECT_SID = 's%3A-8nEMWwNdiNN1XA84Sbg7F9RX6mjuWps.J0HSIrWQKE7a7%2BCDlsSrJItPiGUEfgofo7fTXPe19eg';
 let sended = 0;
 let accepted = null;
 let confirmed = null;
@@ -153,8 +153,10 @@ function startBot() {
             }
             if (text.startsWith('/commands')) {
                 send(id, sender, 'list of commands:');
-                setTimeout(() => send(id, sender, '- /filaPrice'), 700);
-                setTimeout(() => send(id, sender, '- and nothing yet'), 900);
+                setTimeout(() => send(id, sender, '- /filaPrice (see the fila price (2026))'), 700);
+                setTimeout(() => send(id, sender, '- /ping (awnser pong 🏓 lol'), 900);
+                setTimeout(() => send(id, sender, '- /tradeCommon or /trade(the rarety you want with a MAJUSCULE), he will print you fila for fila price'), 900);
+                setTimeout(() => send(id, sender, '- /needmoney, he will buy you filament ⚠️ There is an autoshredder, the bot will never give back the smae items, this is not for more inventory space ⚠️'), 900);
                 shredAllItems();
             }
 
@@ -488,6 +490,9 @@ function startBot() {
             if (msgText === 'nigga' || msgText === 'nigga' || msgText === 'fuck' || msgText === 'fuck'){
                 sendmessageglobal('Bro, that\'s not very kind... stop that or get reported');
             }
+        }
+        if (data.event === 'gotTradeInvite'){
+            send(id, sender, 'Asks for trade are dismissed');
         }
     });
     const slotsFilaAgent = 290;
