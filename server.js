@@ -1,6 +1,7 @@
 const { io } = require('socket.io-client');
 const http = require('http');
 const https = require('https');
+process.on('uncaughtException', (err) => console.error('Erreur :', err));
 http.createServer((req, res) => {
     res.end('bot en ligne');
 }).listen(process.env.PORT || 3000);
@@ -9,7 +10,7 @@ setInterval(() => {
 }, 15 * 1000);
 const SERVER_URL = 'https://s0urce.io';
 const MY_PLAYER_ID = '69bfe7652baa455bee3c111a';
-const CONNECT_SID = 's%3AZN7ekHVmamBMFDSd_1rXQwMPBYIyjDbt.q62zENpJiUf2GoOzCuZuGvYRQ4VfO9KTd%2B%2BhEXu07KM';
+const CONNECT_SID = 's%3AY_c758obAO8eshb34R6Cd_8yvtpGtxhz.6fq77BnHT07%2Fgc2%2B4B1B5fBdopGSAwSik2WG9Dsig70';
 let sended = 0;
 let accepted = null;
 let confirmed = null;
