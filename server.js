@@ -146,6 +146,9 @@ function startBot() {
     });
 
     socket.onAny((eventName, ...args) => {
+        if (args[0]?.event === 'updateCountryWarsGraph'){
+            return;
+        }
         console.log(`[DONNÉE REÇUE] ${eventName} -->`, JSON.stringify(args, null, 2));
         
     });
@@ -511,6 +514,7 @@ function startBot() {
         }
         if (data.event === 'updateBtc'){
             actualBTC = data.arguments[0].btc;
+            console.log(actualBTC);
         }
         if (data.event === 'closeTradeWindow'){
             const status = data.arguments[0].status;
