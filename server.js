@@ -10,7 +10,7 @@ setInterval(() => {
 }, 15 * 1000);
 const SERVER_URL = 'https://s0urce.io';
 const MY_PLAYER_ID = '69bfe7652baa455bee3c111a';
-const CONNECT_SID = '%3AYZJcE9aQiey0-hnsCo5DAvK-rUMUbFxn.ttlRy4fROApmVU%2Fc7kSmQVSBQhB1RvlxS0uGykMEeSA; _ga_KE6ED5PF1R=GS2.1.s1792739401$o2$g1$t1792739468$j60$l0$h0';
+const CONNECT_SID = 's%3AYZJcE9aQiey0-hnsCo5DAvK-rUMUbFxn.ttlRy4fROApmVU%2Fc7kSmQVSBQhB1RvlxS0uGykMEeSA; _ga_KE6ED5PF1R=GS2.1.s1792739401$o2$g1$t1792739468$j60$l0$h0';
 let sended = 0;
 let accepted = null;
 let confirmed = null;
