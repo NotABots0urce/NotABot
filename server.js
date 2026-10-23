@@ -463,7 +463,6 @@ function startBot() {
                 }
             }
             if (trade === 'needargent' && infos.slots){
-                shredAllItems();
                 console.log('le trade est bein en needargent');
                 const hisSlots = infos.slots[theotherID] ?? [];
                 const rarities = hisSlots.filter(Boolean).map(it => it.rarity);
@@ -521,6 +520,9 @@ function startBot() {
             if (status === 'success'){
                 getinventoryandshred();
             }
+        }
+        if (data.event === 'initPlayer'){
+            actualBTC = data.arguments[0].btcUpdate.btc;
         }
     });
     const slotsFilaAgent = 290;
