@@ -1,4 +1,60 @@
+const express = require('express');
+const cors = require('cors');
 const { io } = require('socket.io-client');
+const { Client, GatewayIntentBits, ChannelType, PermissionFlagsBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const mongoose = require('mongoose');
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+const uri = process.env.MONGO_URI;
+if (!uri) {
+    console.error('❌ MONGO_URI manquant dans les variables d\'environnement.');
+    process.exit(1);
+}
+mongoose.connect(uri)
+    .then(() => console.log('✅ Connecté à MongoDB'))
+    .catch((err) => console.error('❌ Erreur connexion MongoDB:', err));
+
+const configSchema = new mongoose.Schema({
+    guildId: { type: String, required: true, unique: true },
+});
+const GuildConfig = mongoose.model('GuildConfig', configSchema);
+
+const userSchema = new mongoose.Schema({
+    userId: { type: String, required: true },
+    guildId: { type: String, required: true },
+    username: { type: String, required: true },
+});
+userSchema.index({ userId: 1, guildId: 1 }, { unique: true });
+const UserData = mongoose.model('UserData', userSchema);
+
+async function getConfig(guildId) {
+    let config = await GuildConfig.findOne({ guildId });
+    if (!config) {
+        config = await GuildConfig.create({ guildId });
+    }
+    return config;
+}
+
+process.on('unhandledRejection', (err) => console.error('❌ Unhandled rejection:', err));
+process.on('uncaughtException', (err) => console.error('❌ Uncaught exception:', err));
+
+const client = new Client({
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent,
+        GatewayIntentBits.GuildMembers
+    ]
+});
+
+client.on('error', (err) => console.error('❌ Client error:', err));
+client.on('shardDisconnect', (e, id) => console.error(`❌ Shard ${id} déconnecté`, e?.code));
+
+client.once('ready', () => {
+    console.log(`🤖 Bot Discord connecté en tant que ${client.user.tag} !`);
+});
 const http = require('http');
 const https = require('https');
 process.on('uncaughtException', (err) => console.error('Erreur :', err));
