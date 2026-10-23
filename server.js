@@ -1,5 +1,19 @@
 
 const { io } = require('socket.io-client');
+const mongoose = require('mongoose');
+
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log('✅ MongoDB connecté'))
+    .catch((err) => console.error('❌ Erreur MongoDB :', err));
+
+const userSchema = new mongoose.Schema({
+    username:     { type: String, required: true, unique: true }, // pseudo s0urce
+    deposited:    { type: Number, default: 0 },    // BTC prêtés au bot
+    depositedAt:  { type: Date, default: null },
+    totalTrades:  { type: Number, default: 0 },
+    createdAt:    { type: Date, default: Date.now }
+});
+const User = mongoose.model('User', userSchema);
 const http = require('http');
 const https = require('https');
 process.on('uncaughtException', (err) => console.error('Erreur :', err));
@@ -45,6 +59,7 @@ let sendedchoice = 0;
 let good = 0;
 let actualBTC = 0;
 let inventory = null;
+let marketplace = false;
 function startBot() {
     console.log('Tentative de connexion Socket.IO...');
     console.log('Longueur du cookie :', CONNECT_SID.length, '| début :', CONNECT_SID.slice(0, 5));
@@ -256,31 +271,42 @@ function startBot() {
                 send(id, sender, `Ok i wil print ${goodornot} ${trade} PSU`)
                 want = `${trade}PSU`;
                 console.log(want);
-                print(want);
+                for (let i = 0; i < goodornot; i++){
+                    print(want);
+                }
             }
             if (text === 'CPU'){
                 send(id, sender, `Ok i wil print ${goodornot} ${trade} CPU`)
                 want = `${trade}CPU`;
                 console.log(want);
-                print(want);
+                for (let i = 0; i < goodornot; i++){
+                    print(want);
+                }
             }
             if (text === 'FW'){
                 send(id, sender, `Ok i wil print ${goodornot} ${trade} FW`)
                 want = `${trade}Firewall`;
                 console.log(want);
-                print(want);
+                for (let i = 0; i < goodornot; i++){
+                    print(want);
+                }
             }
             if (text === 'GPU'){
                 send(id, sender, `Ok i wil print ${goodornot} ${trade} GPU`)
                 want = `${trade}GPU`;
                 console.log(want);
-                print(want);
+                for (let i = 0; i < goodornot; i++){
+                    print(want);
+                }
             }
             if (text === 'N'){
                 send(id, sender, `Ok i wil print ${goodornot} ${trade} basic item(CPU)`)
                 want = `${trade}CPU`;
                 console.log(want);
-                print(want);
+                for (let i = 0; i < goodornot; i++){
+                    print(want);
+                }
+                
             }
             if (text === '/needmoney'){
                 send(id, sender, 'Ok, i will send a trade request, push your items and i will buy them for file price (see with /filaPrice)');
@@ -288,6 +314,12 @@ function startBot() {
                 trade = 'needargent';
                 console.log(trade);
                 sended = 1;
+            }
+            if (text === '/marketplace'){
+                send(id, sender, 'Here you are in the marketplace what did you want:');
+                setTimeout(() => send(id, sender, '- type /see for see the offers'), 100);
+                setTimeout(() => send(id, sender, '- type /sell <item> <price> <description> ex: /sell firewallEthereal 115BTC I sell this firewall 8p !'), 100);
+                setTimeout(() => send(id, sender, '- type /buy <number for see the offers'), 100);
             }
             if (text === '/balance'){
                 grabLootFila();
@@ -509,6 +541,8 @@ function startBot() {
             }
         }
         if (data.event === 'gotTradeInvite'){
+            sender = data.arguments[0].from;
+            id = data.arguments[0].from_id;
             send(id, sender, 'Asks for trade are dismissed');
         }
         if (data.event === 'updateBtc'){
