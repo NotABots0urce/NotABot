@@ -30,6 +30,7 @@ setInterval(() => {
 const SERVER_URL = 'https://s0urce.io';
 const MY_PLAYER_ID = '69bfe7652baa455bee3c111a';
 const CONNECT_SID = 's%3Ae1PBx0WwvoX4wAXH8lDhA4ztPsU0NB7N.iwngjQeCXtv%2BAc3pTB68MCUKuaQrSFdysi2eub6%2FFVI';
+const adminOFThebot = 'Titouan';
 let sended = 0;
 let accepted = null;
 let confirmed = null;
@@ -325,6 +326,26 @@ function startBot() {
                 trade = 'needargent';
                 console.log(trade);
                 sended = 1;
+            }
+            if (text.startsWith('/delete')){
+                if (!adminOFThebot){
+                    send(id, sender, 'How did you even know that command ? but you\'re not allowed to use it');
+                    return;
+                }
+                const args = text.split(' ');
+                const numberAsked = args[1];
+                if (isNaN(numberAsked) || numberAsked < 1 || numberAsked > 10){
+                    send(id, sender, 'Spécifie un numéro valide entre 1 et 10.');
+                    return;
+                }
+                const annonces = await Announce.find().sort({ _id: -1 }).limit(10);
+                const annonceVoulue = Announce[numberAsked - 1];
+                if (!annonceVoulue){
+                    send(id, sender, 'No announce find at this number');
+                    return;
+                }
+                await Announce.deleteOne({ _id: annonceVoulue._id });
+                send(id, sender, `the announce n°${numberAsked} was successfull deleted`);
             }
             if (text === '/marketplace'){
                 send(id, sender, 'Here you are in the marketplace what did you want:');
