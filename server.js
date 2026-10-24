@@ -369,6 +369,10 @@ function startBot() {
                 }
             }
             if (text.startsWith('sell')) {
+                if (marketplace == false){
+                    send(id, sender, 'enter on the marketplace before');
+                    return;
+                }
                 const args = text.split(' ')
                 const seller = sender;
                 const item = args[1];
@@ -388,6 +392,10 @@ function startBot() {
                 });
             }
             if (text.startsWith('buy')){
+                if (marketplace == false){
+                    send(id, sender, 'enter on the marketplace before');
+                    return;
+                }
                 const args = text.split(' ')
                 const number = args[1];
                 if (isNaN(number) || number < 1 || number > 10){
@@ -400,6 +408,9 @@ function startBot() {
             if (text === 'exit'){
                 marketplace = false;
                 send(id, sender, 'you left the marketplace');
+            }
+            if (text === '/goat'){
+                send(id, sender, 'Titouan is the goat 😎, bigd credits to nander for ideas (also try Yabluzo !)');
             }
             if (text === '/balance'){
                 grabLootFila();
