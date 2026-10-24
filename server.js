@@ -339,7 +339,7 @@ function startBot() {
                     return;
                 }
                 const annonces = await Announce.find().sort({ _id: -1 }).limit(10);
-                const annonceVoulue = Announce[numberAsked - 1];
+                const annonceVoulue = annonces[numberAsked - 1];
                 if (!annonceVoulue){
                     send(id, sender, 'No announce find at this number');
                     return;
