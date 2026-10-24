@@ -355,7 +355,7 @@ function startBot() {
                 await fetch('https://notabot-discord.onrender.com/newAnnouce', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ names0urce: sender, newAnnounce: newAnnouce, Announce: Announce})
+                    body: JSON.stringify({ names0urce: sender, seller, item, price, description })
                     
                 });
             }
