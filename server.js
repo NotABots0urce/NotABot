@@ -7,12 +7,16 @@ mongoose.connect(process.env.MONGO_URI)
     .catch((err) => console.error('❌ Erreur MongoDB :', err));
 
 const userSchema = new mongoose.Schema({
-    username:     { type: String, required: true, unique: true }, // pseudo s0urce
-    deposited:    { type: Number, default: 0 },    // BTC prêtés au bot
-    depositedAt:  { type: Date, default: null },
-    totalTrades:  { type: Number, default: 0 },
-    createdAt:    { type: Date, default: Date.now }
+    username: { type: String, required: true, unique: true },
+    sendat: { type: Date, default: Date.now }
 });
+const announceSchema = new mongoose.Schema({
+    seller:      { type: String, required: true },
+    item:        { type: String, required: true },
+    price:       { type: String, required: true },
+    description: { type: String, default: '' },
+});
+const Announce = mongoose.model('Announce', announceSchema);
 const User = mongoose.model('User', userSchema);
 const http = require('http');
 const https = require('https');
@@ -173,7 +177,7 @@ function startBot() {
         socket.close();
         setTimeout(startBot, 5000);
     });
-    socket.on('event', function(data){
+    socket.on('event', async function(data){
         if (data.event == 'gotChatMessage'){
             text = data.arguments[0].message;
             player = data.arguments[0];
@@ -317,9 +321,51 @@ function startBot() {
             }
             if (text === '/marketplace'){
                 send(id, sender, 'Here you are in the marketplace what did you want:');
-                setTimeout(() => send(id, sender, '- type /see for see the offers'), 100);
-                setTimeout(() => send(id, sender, '- type /sell <item> <price> <description> ex: /sell firewallEthereal 115BTC I sell this firewall 8p !'), 100);
-                setTimeout(() => send(id, sender, '- type /buy <number for see the offers'), 100);
+                setTimeout(() => send(id, sender, '- see for see the offers'), 100);
+                setTimeout(() => send(id, sender, '- sell <item> <price> <description> ex: sell firewallEthereal 115BTC I sell this firewall 8p !'), 200);
+                setTimeout(() => send(id, sender, '- buy <number for see the offers'), 300);
+                setTimeout(() => send(id, sender, '- exit for exit the marketplace'), 400);
+                marketplace = true;
+                
+            }
+            if (text === 'see'){
+                if (marketplace == false){
+                    send(id, sender, 'enter on the marketplace before')
+                } else {
+                    const annonces = await Announce.find().sort({ _id: -1 }).limit(10);
+                    annonces.forEach((annonce, i) => {
+                        setTimeout(() => {
+                            send(id, sender, `${i + 1}: selled by: ${annonce.seller} item: ${annonce.item} price: ${annonce.price}, description: ${annonce.description}`)
+                        }, i * 100);
+                    }); 
+                }
+            }
+            if (text.startsWith('sell')) {
+                const args = text.split(' ')
+                const seller = sender;
+                const item = args[1];
+                const price = args[2];
+                const description = args.slice(3).join(' ');
+                if (!seller || !item || !price || !description){
+                    send(id, sender, 'please made a schema like this: sell <item> <price> <description> ex: sell firewallEthereal 115BTC I sell this firewall 8p !');
+                    return;
+                }
+                await Announce.create({ seller, item, price, description });
+                send(id, sender, `succes ! your announce has been created: selled by: ${seller} item: ${item} price: ${price}, description: ${description}`);
+            }
+            if (text.startsWith('buy')){
+                const args = text.split(' ')
+                const number = args[1];
+                if (isNaN(number) || number < 1 || number > 10){
+                    send(id, sender, 'specify a valid number please ex: buy 2');
+                    return;
+                } else {
+                    send(id, send, 'OK, i send a mail to the person, he/she will contact you soon');
+                }
+            }
+            if (text === 'exit'){
+                marketplace = false;
+                send(id, sender, 'you left the marketplace');
             }
             if (text === '/balance'){
                 grabLootFila();
@@ -536,7 +582,7 @@ function startBot() {
         }
         if (data.event === 'gotGlobalRoomMessage'){
             const msgText = data.arguments[0].content;
-            if (msgText === 'nigga' || msgText === 'nigga' || msgText === 'fuck' || msgText === 'fuck'){
+            if (msgText === 'nigga' || msgText === 'Nigga' || msgText === 'fuck' || msgText === 'Fuck'){
                 sendmessageglobal('Bro, that\'s not very kind... stop that or get reported');
             }
         }
