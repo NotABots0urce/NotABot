@@ -350,7 +350,7 @@ function startBot() {
             if (text === '/marketplace'){
                 send(id, sender, 'Here you are in the marketplace what did you want:');
                 setTimeout(() => send(id, sender, '- see for see the offers'), 100);
-                setTimeout(() => send(id, sender, '- sell <item> <price> <description> ex: sell firewallEthereal 115BTC I sell this firewall 8p !'), 200);
+                setTimeout(() => send(id, sender, '- sell <item> <price> <description> ex: sell firewallEthereal 115BTC I sell this firewall 8p !, if you want to sell a lot of items please send your shop ex: My shop undefBTC <the link>'), 200);
                 setTimeout(() => send(id, sender, '- buy <number>'), 300);
                 setTimeout(() => send(id, sender, '- exit for exit the marketplace'), 400);
                 marketplace = true;
