@@ -350,8 +350,14 @@ function startBot() {
                     send(id, sender, 'please made a schema like this: sell <item> <price> <description> ex: sell firewallEthereal 115BTC I sell this firewall 8p !');
                     return;
                 }
-                await Announce.create({ seller, item, price, description });
+                const newAnnouce = await Announce.create({ seller, item, price, description });
                 send(id, sender, `succes ! your announce has been created: selled by: ${seller} item: ${item} price: ${price}, description: ${description}`);
+                await fetch('https://notabot-discord.onrender.com/newAnnouce', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ names0urce: sender, newAnnounce: newAnnouce, Announce: Announce})
+                    
+                });
             }
             if (text.startsWith('buy')){
                 const args = text.split(' ')
