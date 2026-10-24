@@ -209,6 +209,7 @@ function startBot() {
                 send(id, sender, '❌ invalid command');
             }
             if (text === '/tradeCommon'){
+                send(id, sender, 'ok i will send you a trade reuqest, put a factor of 0.01BTC for a valid trade');
                 grabLootFila();
                 console.log('grabbed loot');
                 setTimeout(() => commonFila = filament.common, 700);
@@ -218,6 +219,7 @@ function startBot() {
                 sendedchoice = 0;
             }
             if (text === '/tradeUncommon'){
+                send(id, sender, 'ok i will send you a trade reuqest, put a factor of 0.03BTC for a valid trade');
                 grabLootFila();
                 console.log('grabbed loot');
                 setTimeout(() => uncommonFila = filament.uncommon, 700);
@@ -227,6 +229,7 @@ function startBot() {
                 sendedchoice = 0;
             }
             if (text === '/tradeRare'){
+                send(id, sender, 'ok i will send you a trade reuqest, put a factor of 0.1BTC for a valid trade');
                 grabLootFila();
                 console.log('grabbed loot');
                 setTimeout(() => rareFila = filament.rare, 700);
@@ -236,6 +239,7 @@ function startBot() {
                 sendedchoice = 0;
             }
             if (text === '/tradeEpic'){
+                send(id, sender, 'ok i will send you a trade reuqest, put a factor of 0.3BTC for a valid trade');
                 grabLootFila();
                 console.log('grabbed loot');
                 setTimeout(() => epicFila = filament.epic, 700);
@@ -245,6 +249,7 @@ function startBot() {
                 sendedchoice = 0;
             }
             if (text === '/tradeLeg'){
+                send(id, sender, 'ok i will send you a trade reuqest, put a factor of 1.5BTC for a valid trade');
                 grabLootFila();
                 console.log('grabbed loot');
                 setTimeout(() => legFila = filament.legendary, 700);
@@ -254,6 +259,7 @@ function startBot() {
                 sendedchoice = 0;
             }
             if (text === '/tradeMythic'){
+                send(id, sender, 'ok i will send you a trade reuqest, put a factor of 4.5BTC for a valid trade');
                 grabLootFila();
                 console.log('grabbed loot');
                 setTimeout(() => myhticFila = filament.mythic, 700);
@@ -263,6 +269,7 @@ function startBot() {
                 sendedchoice = 0;
             }
             if (text === '/tradeEth'){
+                send(id, sender, 'ok i will send you a trade reuqest, put a factor of 45BTC for a valid trade');
                 grabLootFila();
                 console.log('grabbed loot');
                 setTimeout(() => ethFila = filament.ethereal, 700);
@@ -323,7 +330,7 @@ function startBot() {
                 send(id, sender, 'Here you are in the marketplace what did you want:');
                 setTimeout(() => send(id, sender, '- see for see the offers'), 100);
                 setTimeout(() => send(id, sender, '- sell <item> <price> <description> ex: sell firewallEthereal 115BTC I sell this firewall 8p !'), 200);
-                setTimeout(() => send(id, sender, '- buy <number for see the offers'), 300);
+                setTimeout(() => send(id, sender, '- buy <number>'), 300);
                 setTimeout(() => send(id, sender, '- exit for exit the marketplace'), 400);
                 marketplace = true;
                 
