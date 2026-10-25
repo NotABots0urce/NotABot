@@ -1,6 +1,13 @@
 
 const { io } = require('socket.io-client');
 const mongoose = require('mongoose');
+function stop() {
+    console.log('Arrêt du bot...');
+    mongoose.connection.close().finally(() => process.exit(0));
+}
+process.on('SIGINT', stop);
+process.on('SIGTERM', stop);
+process.on('exit', code => console.log("I'm out with code", code));
 
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('✅ MongoDB connecté'))
@@ -8,7 +15,9 @@ mongoose.connect(process.env.MONGO_URI)
 
 const userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
-    sendat: { type: Date, default: Date.now }
+    record: { type: Number, default: 0 },
+    recordOwner: { type: String, default: null},
+    someoneStopMyProject: { type: String, default: null}
 });
 const announceSchema = new mongoose.Schema({
     seller:      { type: String, required: true },
@@ -18,6 +27,7 @@ const announceSchema = new mongoose.Schema({
 });
 const Announce = mongoose.model('Announce', announceSchema);
 const User = mongoose.model('User', userSchema);
+const RECORD_KEY = 'GLOBAL_RECORD';
 const http = require('http');
 const https = require('https');
 const express = require('express');
@@ -33,7 +43,7 @@ setInterval(() => {
 const SERVER_URL = 'https://s0urce.io';
 const MY_PLAYER_ID = '69bfe7652baa455bee3c111a';
 const CONNECT_SID = 's%3AT1Rxov2oSgxNSLwEd-xnMa6jDioF9mHU.EjoGP5XTEGt7kf%2FZsEbrKojEE4F%2FL%2FZbXGpmExuECyo';
-const adminOFThebot = 'Titouan';
+const adminsOFThebot = ['Titouan', 'NanderTGA', 'Nel'];
 let sended = 0;
 let accepted = null;
 let confirmed = null;
@@ -140,7 +150,7 @@ function startBot() {
             Object.keys(inventory).filter(k => inventory[k].name !== 'Crow' && inventory[k].name !== 'Otter' && inventory[k].name !== 'Gobo').forEach((itemId, i) => {
                 console.log('shred', itemId, '| id =', inventory[itemId].id, '| name =', inventory[itemId].name);
                 setTimeout(() => {
-                    gotoshredder(itemId); // la clé, comme dans print()
+                    gotoshredder(itemId);
                     setTimeout(() => shredAllItems(), 500);
                 }, i * 1500);
             });
@@ -155,7 +165,7 @@ function startBot() {
         socket.io.engine.on('packetCreate', (p) => { if (p.data) console.log('ENVOYÉ :', p.data); });
         console.log('Socket connectée avec succès ! ID :', socket.id);
 
-        socket.emit('playGame', MY_PLAYER_ID, (reponse) => {
+        socket.emit('playGame', MY_PLAYER_ID, async (reponse) => {
             console.log('playGame réponse :', reponse);
 
             socket.emit('playerInput', { event: 'getBoosterInfo' });
@@ -163,8 +173,15 @@ function startBot() {
             socket.emit('playerInput', { event: 'joinGlobalChat', join: true });
             socket.emit('playerInput', { event: 'getClosestPlayersAndNPC' });
             sendmessageglobal('hi !');
-        });
-    });
+            const whorestartme = await User.findOneAndUpdate(
+                { someoneStopMyProject: 'botmodos' },
+                { someoneStopMyProject: null }
+            );
+            if (whorestartme){
+                send(id, whorestartme.username, 'I\'m Back ! 😎');
+            }
+                });
+            });
 
     socket.on('connect_error', (err) => {
         console.error('Erreur de connexion (Refusé par le serveur) :', err.message);
@@ -216,6 +233,20 @@ function startBot() {
             }
             if (text.startsWith('/') && !text === '/ping' || text.startsWith('/') && !text === '/commands' ||  text.startsWith('/') && !text === '/filaPrice'){
                 send(id, sender, '❌ invalid command');
+            }
+            if (text === '/restart'){
+                if (!adminsOFThebot.includes(sender)){
+                    send(id, sender, 'How did you even know that command ? but you\'re not allowed to use it');
+                } else {
+                    send(id, sender, 'I will be back soon, more soon that you think...');
+                    await User.findOneAndUpdate(
+                        { username: sender },
+                        { someoneStopMyProject: 'botmodos'},
+                        { upsert: true }
+                    );
+                    setTimeout(stop, 2500);
+                }
+
             }
             if (text === '/tradeCommon'){
                 send(id, sender, 'ok i will send you a trade reuqest, put a factor of 0.01BTC for a valid trade');
@@ -336,7 +367,7 @@ function startBot() {
                 sended = 1;
             }
             if (text.startsWith('/delete')){
-                if (!adminOFThebot){
+                if (!adminsOFThebot.includes(sender)){
                     send(id, sender, 'How did you even know that command ? but you\'re not allowed to use it');
                     return;
                 }
@@ -419,6 +450,14 @@ function startBot() {
             }
             if (text === '/goat'){
                 send(id, sender, 'Titouan is the goat 😎, bigd credits to nander for ideas (also try Yabluzo !)');
+            }
+            if (text === 'seeRecord'){
+                const currentrecord = await User.findOne({ username: RECORD_KEY });
+                if (!currentrecord || !currentrecord.record){
+                    send(id, sender, 'No record yet !');
+                } else {
+                    send(id, sender, `The actual record is: ${currentrecord.record}sec by ${currentrecord.recordOwner}`);
+                }
             }
             if (text === '/balance'){
                 grabLootFila();
@@ -656,6 +695,23 @@ function startBot() {
         }
         if (data.event === 'initPlayer'){
             actualBTC = data.arguments[0].btcUpdate.btc;
+        }
+        if (data.event === 'gotHacked'){
+            const infos = data.arguments[0];
+            id = infos.id;
+            sender = infos.attacker;
+            const TotalHackTime = infos.total_hack_duration;
+            const currentrecord = await User.findOne({ username: RECORD_KEY });
+            if (currentrecord && currentrecord.record > TotalHackTime){
+                send(id, sender, `GG by hack me on ${TotalHackTime}sec, But the record is ${currentrecord.record} by ${currentrecord.recordOwner}`);
+            } else {
+                await User.findOneAndUpdate(
+                    { username: RECORD_KEY },
+                    { record: TotalHackTime, recordOwner: sender},
+                    { upsert: true }
+                );
+                send(id, sender, `🏆 ! You made A new record ! : ${TotalHackTime} by ${sender}`);
+            }
         }
     });
     const slotsFilaAgent = 290;
