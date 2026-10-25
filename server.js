@@ -219,7 +219,7 @@ function startBot() {
                 setTimeout(() => send(id, sender, '- tradeCommon or trade(the rarety you want with a MAJUSCULE), I will print you fila for fila price'), 900);
                 setTimeout(() => send(id, sender, '- needmoney, I will buy you filament ⚠️ There is an autoshredder, I will never give back the smae items, this is not for more inventory space ⚠️'), 900);
                 setTimeout(() => send(id, sender, '- marketplace: enter the marketplace'), 700);
-                setTimeout(() => send(id, sender, '- seerecord: I will send the record of the fatest hack to me'), 700);
+                setTimeout(() => send(id, sender, '- seeRecord: I will send the record of the fatest hack to me'), 700);
                 setTimeout(() => send(id, sender, '- goat: want to see ? type "goat"'), 700);
                 shredAllItems();
             }
@@ -708,7 +708,7 @@ function startBot() {
             actualBTC = data.arguments[0].btcUpdate.btc;
         }
         if (data.event === 'gotHacked'){
-            const infos = data.arguments[0];
+            const infos = data.arguments[1];
             id = infos.id;
             sender = infos.attacker;
             const TotalHackTime = infos.total_hack_duration;
