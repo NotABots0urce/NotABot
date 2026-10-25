@@ -171,7 +171,6 @@ function startBot() {
             socket.emit('playerInput', { event: 'getPlayerMails' });
             socket.emit('playerInput', { event: 'joinGlobalChat', join: true });
             socket.emit('playerInput', { event: 'getClosestPlayersAndNPC' });
-            sendmessageglobal('hi !');
             const whorestartme = await User.findOneAndUpdate(
                 { someoneStopMyProject: 'botmodos' },
                 { someoneStopMyProject: null }
