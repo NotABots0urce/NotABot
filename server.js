@@ -20,6 +20,9 @@ const Announce = mongoose.model('Announce', announceSchema);
 const User = mongoose.model('User', userSchema);
 const http = require('http');
 const https = require('https');
+const express = require('express');
+const app = express();
+app.use(express.json());
 process.on('uncaughtException', (err) => console.error('Erreur :', err));
 http.createServer((req, res) => {
     res.end('bot en ligne');
@@ -79,6 +82,9 @@ function startBot() {
     });
     function send(id, user, msg) {
         socket.emit('playerInput', { event: 'sendChatMessage', username: user, message: msg });
+    }
+    function sends0urcemail(id, from, to, msg){
+        socket.emit('playerInput', {event: 'sendmail', id: id, username: from, to: to, message: msg});
     }
     function print(want){
         socket.emit('playerInput', { event: 'printItem', id: want }, (res) => {
@@ -643,7 +649,7 @@ function startBot() {
         if (data.event === 'closeTradeWindow'){
             const status = data.arguments[0].status;
             if (status === 'success'){
-                getinventoryandshred();
+                setTimeout(getinventoryandshred, 1500);
             }
         }
         if (data.event === 'initPlayer'){
@@ -652,10 +658,15 @@ function startBot() {
     });
     const slotsFilaAgent = 290;
     const delai = slotsFilaAgent * 60 * 1000 * 3.2;
-    const slotsItemAgent = 6;
+    const slotsItemAgent = 7;
     const delai2 = slotsItemAgent * 60 * 1000 * 80
     setTimeout(() => grabLootFila(), delai);
     setTimeout(() => shredLoot(), delai2);
+    app.post('/sendMailFromDiscord', async (req, res) => {
+        res.sendStatus(200);
+        const { from, to } = req.body;
+        sends0urcemail(id, from, to, `${from} want to buy you something !`)
+    });
 }
 
 startBot();
