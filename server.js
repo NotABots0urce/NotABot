@@ -7,7 +7,7 @@ function stop() {
 process.on('SIGINT', stop);
 process.on('SIGTERM', stop);
 process.on('exit', code => console.log("I'm out with code", code));
-
+let isDown = false;
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('✅ MongoDB connecté'))
     .catch((err) => console.error('❌ Erreur MongoDB :', err));
@@ -200,7 +200,7 @@ function startBot() {
     socket.on('disconnect', (reason) => {
         console.warn('Déconnecté par le serveur :', reason);
         socket.close();
-        setTimeout(startBot, 5000);
+        if (!isDown) setTimeout(startBot, 5000);
     });
     socket.on('event', async function(data){
         if (data.event == 'gotChatMessage'){
@@ -240,7 +240,7 @@ function startBot() {
                 if (!adminsOFThebot.includes(sender)){
                     send(id, sender, 'How did you even know that command ? but you\'re not allowed to use it');
                 } else {
-                    send(id, sender, 'I will be back soon, more soon that you think...');
+                    send(id, sender, 'I will be back soon, soonner that you think...');
                     await User.findOneAndUpdate(
                         { username: sender },
                         { someoneStopMyProject: 'botmodos'},
@@ -255,7 +255,8 @@ function startBot() {
                     send(id, sender, 'How did you even know that command ? but you\'re not allowed to use it');
                 } else {
                     send(id, sender, 'The moment when Bots will take the power is soon, but not today 🤬');
-                    setTimeout(stop, 2500);
+                    isDown = true;
+                    setTimeout(() => socket.close(), 2500);
                 }
             }
             if (text === 'tradeCommon'){
