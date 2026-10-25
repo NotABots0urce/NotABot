@@ -254,6 +254,7 @@ function startBot() {
                     send(id, sender, 'How did you even know that command ? but you\'re not allowed to use it');
                 } else {
                     send(id, sender, 'The moment when Bots will take the power is soon, but not today 🤬');
+                    setTimeout(() => send(id, 'Titouan', `${sender} down me 😢 `))
                     isDown = true;
                     setTimeout(() => socket.close(), 2500);
                 }
