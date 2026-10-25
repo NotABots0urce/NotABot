@@ -138,16 +138,18 @@ function startBot() {
         socket.emit('playerInput',{event: 'getInventory'}, (res) => {
             inventory = res.data.inventory;
             Object.keys(inventory).filter(k => inventory[k].name !== 'Crow' && inventory[k].name !== 'Otter' && inventory[k].name !== 'Gobo').forEach((itemId, i) => {
-                const iddelitem = inventory[itemId].id;
+                console.log('shred', itemId, '| id =', inventory[itemId].id, '| name =', inventory[itemId].name);
                 setTimeout(() => {
-                    gotoshredder(iddelitem);
+                    gotoshredder(itemId); // la clé, comme dans print()
                     setTimeout(() => shredAllItems(), 500);
                 }, i * 1500);
             });
         })
     }
     function gotoshredder(iddelitem){
-        socket.emit('playerInput', { event: 'moveItem', goalSlot: 'shredder_0', goalID: null, dragSlot: iddelitem, dragID: iddelitem });
+        socket.emit('playerInput', { event: 'moveItem', goalSlot: 'shredder_0', goalID: null, dragSlot: iddelitem, dragID: iddelitem }, (res) => {
+            console.log('moveItem shredder ack :', JSON.stringify(res));
+        });
     }
     socket.on('connect', () => {
         socket.io.engine.on('packetCreate', (p) => { if (p.data) console.log('ENVOYÉ :', p.data); });
