@@ -29,7 +29,7 @@ setInterval(() => {
 }, 15 * 1000);
 const SERVER_URL = 'https://s0urce.io';
 const MY_PLAYER_ID = '69bfe7652baa455bee3c111a';
-const CONNECT_SID = '%3AT1Rxov2oSgxNSLwEd-xnMa6jDioF9mHU.EjoGP5XTEGt7kf%2FZsEbrKojEE4F%2FL%2FZbXGpmExuECyo';
+const CONNECT_SID = 's%3AT1Rxov2oSgxNSLwEd-xnMa6jDioF9mHU.EjoGP5XTEGt7kf%2FZsEbrKojEE4F%2FL%2FZbXGpmExuECyo';
 const adminOFThebot = 'Titouan';
 let sended = 0;
 let accepted = null;
