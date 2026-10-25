@@ -722,6 +722,7 @@ function startBot() {
                     { upsert: true }
                 );
                 send(id, sender, `🏆 ! You made A new record ! : ${TotalHackTime} by ${sender}`);
+                sendmessageglobal(`A new record was created ! : ${TotalHackTime} by ${sender}. you think you're better ? hack me !`);
             }
         }
     });
