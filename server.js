@@ -713,7 +713,7 @@ function startBot() {
             sender = infos.attacker;
             const TotalHackTime = infos.total_hack_duration;
             const currentrecord = await User.findOne({ username: RECORD_KEY });
-            if (currentrecord && currentrecord.record > TotalHackTime){
+            if (currentrecord && currentrecord.record < TotalHackTime){
                 send(id, sender, `GG by hack me on ${TotalHackTime}sec, But the record is ${currentrecord.record} by ${currentrecord.recordOwner}`);
             } else {
                 await User.findOneAndUpdate(
