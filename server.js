@@ -1,4 +1,3 @@
-
 const { io } = require('socket.io-client');
 const mongoose = require('mongoose');
 function stop() {
@@ -210,23 +209,26 @@ function startBot() {
             sender = player.username;
             id = player.id;
             console.log(id);
-            if (text === '/ping'){
+            if (text === 'ping'){
                 send(id, sender, 'pong 🏓');
             }
-            if (text.startsWith('/commands')) {
+            if (text.startsWith('commands')) {
                 send(id, sender, 'list of commands:');
-                setTimeout(() => send(id, sender, '- /filaPrice (see the fila price (2026))'), 700);
-                setTimeout(() => send(id, sender, '- /ping (awnser pong 🏓 lol'), 900);
-                setTimeout(() => send(id, sender, '- /tradeCommon or /trade(the rarety you want with a MAJUSCULE), he will print you fila for fila price'), 900);
-                setTimeout(() => send(id, sender, '- /needmoney, he will buy you filament ⚠️ There is an autoshredder, the bot will never give back the smae items, this is not for more inventory space ⚠️'), 900);
+                setTimeout(() => send(id, sender, '- filaPrice (see the fila price (2026))'), 700);
+                setTimeout(() => send(id, sender, '- ping (awnser pong 🏓 lol'), 900);
+                setTimeout(() => send(id, sender, '- tradeCommon or trade(the rarety you want with a MAJUSCULE), I will print you fila for fila price'), 900);
+                setTimeout(() => send(id, sender, '- needmoney, I will buy you filament ⚠️ There is an autoshredder, I will never give back the smae items, this is not for more inventory space ⚠️'), 900);
+                setTimeout(() => send(id, sender, '- marketplace: enter the marketplace'), 700);
+                setTimeout(() => send(id, sender, '- seerecord: I will send the record of the fatest hack to me'), 700);
+                setTimeout(() => send(id, sender, '- goat: want to see ? type "goat"'), 700);
                 shredAllItems();
             }
 
-            if (text.startsWith('/filaPrice')) {
+            if (text.startsWith('filaPrice')) {
                 send(id, sender, 'fila price (2026):');
                 setTimeout(() => send(id, sender, 'common: 0.01 BTC | uncommon: 0.03 BTC | rare: 0.1 BTC | epic: 0.3 BTC | legendary: 1.5 BTC | mythic: 4.5 BTC | ethereal: 45 BTC'), 700);
             }
-            if (text === '/trade'){
+            if (text === 'trade'){
                 send(id, sender, 'how does loan works ? I have an eth GPU and PSU, so you give me BTC and i farm it, when you want with /recupBTC I will give you back your BTC * my BTC/sec * the number of second that i keep it, after 30 days,  stop counting the + you earn')
                 sendTradRequest(sender);
                 sended = 1;
@@ -234,7 +236,7 @@ function startBot() {
             if (text.startsWith('/') && !text === '/ping' || text.startsWith('/') && !text === '/commands' ||  text.startsWith('/') && !text === '/filaPrice'){
                 send(id, sender, '❌ invalid command');
             }
-            if (text === '/restart'){
+            if (text === 'restart'){
                 if (!adminsOFThebot.includes(sender)){
                     send(id, sender, 'How did you even know that command ? but you\'re not allowed to use it');
                 } else {
@@ -248,7 +250,15 @@ function startBot() {
                 }
 
             }
-            if (text === '/tradeCommon'){
+            if (text === 'down'){
+                if (!adminsOFThebot.includes(sender)){
+                    send(id, sender, 'How did you even know that command ? but you\'re not allowed to use it');
+                } else {
+                    send(id, sender, 'The moment when Bots will take the power is soon, but not today 🤬');
+                    setTimeout(stop, 2500);
+                }
+            }
+            if (text === 'tradeCommon'){
                 send(id, sender, 'ok i will send you a trade reuqest, put a factor of 0.01BTC for a valid trade');
                 grabLootFila();
                 console.log('grabbed loot');
@@ -258,7 +268,7 @@ function startBot() {
                 sended = 1;
                 sendedchoice = 0;
             }
-            if (text === '/tradeUncommon'){
+            if (text === 'tradeUncommon'){
                 send(id, sender, 'ok i will send you a trade reuqest, put a factor of 0.03BTC for a valid trade');
                 grabLootFila();
                 console.log('grabbed loot');
@@ -268,7 +278,7 @@ function startBot() {
                 sended = 1;
                 sendedchoice = 0;
             }
-            if (text === '/tradeRare'){
+            if (text === 'tradeRare'){
                 send(id, sender, 'ok i will send you a trade reuqest, put a factor of 0.1BTC for a valid trade');
                 grabLootFila();
                 console.log('grabbed loot');
@@ -278,7 +288,7 @@ function startBot() {
                 sended = 1;
                 sendedchoice = 0;
             }
-            if (text === '/tradeEpic'){
+            if (text === 'tradeEpic'){
                 send(id, sender, 'ok i will send you a trade reuqest, put a factor of 0.3BTC for a valid trade');
                 grabLootFila();
                 console.log('grabbed loot');
@@ -288,7 +298,7 @@ function startBot() {
                 sended = 1;
                 sendedchoice = 0;
             }
-            if (text === '/tradeLeg'){
+            if (text === 'tradeLeg'){
                 send(id, sender, 'ok i will send you a trade reuqest, put a factor of 1.5BTC for a valid trade');
                 grabLootFila();
                 console.log('grabbed loot');
@@ -298,7 +308,7 @@ function startBot() {
                 sended = 1;
                 sendedchoice = 0;
             }
-            if (text === '/tradeMythic'){
+            if (text === 'tradeMythic'){
                 send(id, sender, 'ok i will send you a trade reuqest, put a factor of 4.5BTC for a valid trade');
                 grabLootFila();
                 console.log('grabbed loot');
@@ -308,7 +318,7 @@ function startBot() {
                 sended = 1;
                 sendedchoice = 0;
             }
-            if (text === '/tradeEth'){
+            if (text === 'tradeEth'){
                 send(id, sender, 'ok i will send you a trade reuqest, put a factor of 45BTC for a valid trade');
                 grabLootFila();
                 console.log('grabbed loot');
@@ -359,14 +369,14 @@ function startBot() {
                 }
                 
             }
-            if (text === '/needmoney'){
+            if (text === 'needmoney'){
                 send(id, sender, 'Ok, i will send a trade request, push your items and i will buy them for file price (see with /filaPrice)');
                 sendTradRequest(sender);
                 trade = 'needargent';
                 console.log(trade);
                 sended = 1;
             }
-            if (text.startsWith('/delete')){
+            if (text.startsWith('delete')){
                 if (!adminsOFThebot.includes(sender)){
                     send(id, sender, 'How did you even know that command ? but you\'re not allowed to use it');
                     return;
@@ -386,7 +396,7 @@ function startBot() {
                 await Announce.deleteOne({ _id: annonceVoulue._id });
                 send(id, sender, `the announce n°${numberAsked} was successfull deleted`);
             }
-            if (text === '/marketplace'){
+            if (text === 'marketplace'){
                 send(id, sender, 'Here you are in the marketplace what did you want:');
                 setTimeout(() => send(id, sender, '- see for see the offers'), 100);
                 setTimeout(() => send(id, sender, '- sell <item> <price> <description> ex: sell firewallEthereal 115BTC I sell this firewall 8p !, if you want to sell a lot of items please send your shop ex: My shop undefBTC <the link>'), 200);
@@ -448,7 +458,7 @@ function startBot() {
                 marketplace = false;
                 send(id, sender, 'you left the marketplace');
             }
-            if (text === '/goat'){
+            if (text === 'goat'){
                 send(id, sender, 'Titouan is the goat 😎, bigd credits to nander for ideas (also try Yabluzo !)');
             }
             if (text === 'seeRecord'){
@@ -459,7 +469,7 @@ function startBot() {
                     send(id, sender, `The actual record is: ${currentrecord.record}sec by ${currentrecord.recordOwner}`);
                 }
             }
-            if (text === '/balance'){
+            if (text === 'balance'){
                 grabLootFila();
                 console.log('grabbed loot');
                 setTimeout(() => commonFila = filament.common, 100);
