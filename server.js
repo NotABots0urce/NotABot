@@ -85,6 +85,9 @@ let currentrecord = null;
 let currentrecord21 = null;
 let currentrecord22 = null;
 let currentrecord23 = null;
+let theid = null;
+let hisBTC = null;
+let hisname = null;
 function startBot() {
     console.log('Tentative de connexion Socket.IO...');
     console.log('Longueur du cookie :', CONNECT_SID.length, '| début :', CONNECT_SID.slice(0, 5));
@@ -102,6 +105,25 @@ function startBot() {
     }
     function sends0urcemail(id, from, to, msg){
         socket.emit('playerInput', {event: 'sendmail', id: id, username: from, to: to, message: msg});
+    }
+    async function getBTCofmate(theid){
+        socket.emit('playerInput',{event: 'getPlayerProfile',id: theid}), (res) => {
+            try {
+                if (res.status === 'success'){
+                    hisBTC = res.data.btc.toFixed(8);
+                    hisname = res.data.username;
+                    send(id, sender, `${hisname} has ${hisBTC}BTC`);
+                } else {
+                    send(id, sender, 'plesae provide a valid id');
+                    hisBTC = null;
+                    hisname = null;
+                    return;
+                }
+            } catch (e) {
+                hisBTC = null;
+                hisname = null;
+            }
+        }
     }
     async function getProfile(sender){
         try {
@@ -230,6 +252,16 @@ function startBot() {
             console.log(id);
             if (text === 'ping'){
                 send(id, sender, 'pong 🏓');
+            }
+            if (text.startsWith('seeBTC')){
+                const args = text.split(' ');
+                const theid = args[1];
+                
+                if (!args) {
+                    send(id, sender, 'Please set an id after seeBTC ex: seeBTC hdjdbdid544585d_df4');
+                } else {
+                    getBTCofmate(theid);
+                }
             }
             if (text.startsWith('commands')) {
                 send(id, sender, 'list of commands:');
@@ -533,7 +565,7 @@ function startBot() {
                 if (actualBTC == 0){
                     setTimeout(() => send(id, sender, 'I doesn\'t know how many i have for now, but trade with me with "needmoney" for I see how many i have'), 400);
                 }
-                setTimeout(() => send(id, sender, `I have ${actualBTC.toFixed[8]}BTC`), 400);
+                setTimeout(() => send(id, sender, `I have ${actualBTC.toFixed(8)}BTC`), 400);
             }
         }
         if (data.event == 'updateTradeWindow' && sended == 1){
