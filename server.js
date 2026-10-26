@@ -26,7 +26,9 @@ const announceSchema = new mongoose.Schema({
 });
 const Announce = mongoose.model('Announce', announceSchema);
 const User = mongoose.model('User', userSchema);
-const RECORD_KEY = 'GLOBAL_RECORD';
+const RECORD_KEY21 = '21_RECORD';
+const RECORD_KEY22 = '22_RECORD';
+const RECORD_KEY23 = '23_RECORD';
 const http = require('http');
 const https = require('https');
 const express = require('express');
@@ -41,7 +43,7 @@ setInterval(() => {
 }, 15 * 1000);
 const SERVER_URL = 'https://s0urce.io';
 const MY_PLAYER_ID = '69bfe7652baa455bee3c111a';
-const CONNECT_SID = 's%3AT1Rxov2oSgxNSLwEd-xnMa6jDioF9mHU.EjoGP5XTEGt7kf%2FZsEbrKojEE4F%2FL%2FZbXGpmExuECyo';
+const CONNECT_SID = 's%3AX8O3iveyrySaVn6nf8woCZX6aQczPrEC.BUxBP%2FKp6DkM5bCx0uRZZ0h6J7gN0TskAWF3G%2FrC4ws';
 const adminsOFThebot = ['Titouan', 'NanderTGA', 'Nel'];
 let sended = 0;
 let accepted = null;
@@ -77,6 +79,12 @@ let good = 0;
 let actualBTC = 0;
 let inventory = null;
 let marketplace = false;
+let badge = null;
+let port = null;
+let currentrecord = null;
+let currentrecord21 = null;
+let currentrecord22 = null;
+let currentrecord23 = null;
 function startBot() {
     console.log('Tentative de connexion Socket.IO...');
     console.log('Longueur du cookie :', CONNECT_SID.length, '| début :', CONNECT_SID.slice(0, 5));
@@ -94,6 +102,18 @@ function startBot() {
     }
     function sends0urcemail(id, from, to, msg){
         socket.emit('playerInput', {event: 'sendmail', id: id, username: from, to: to, message: msg});
+    }
+    async function getProfile(sender){
+        try {
+            const res = await socket.timeout(5000).emitWithAck('playerInput', { event: 'getAuthorizedProfile', username: sender });
+            if (res?.status === 'success'){
+                badge = res.profile.player_badge;
+            } else {
+                badge = null;
+            }
+        } catch (e) {
+            badge = null;
+        }
     }
     function print(want){
         socket.emit('playerInput', { event: 'printItem', id: want }, (res) => {
@@ -178,7 +198,6 @@ function startBot() {
             if (whorestartme){
                 send(id, whorestartme.username, 'I\'m Back ! 😎');
             }
-            sendmessageglobal(`A new record was created ! : 1.453sec by Nel. you think you're better ? hack me !`);
         });
     });
 
@@ -237,7 +256,8 @@ function startBot() {
                 send(id, sender, '❌ invalid command');
             }
             if (text === 'restart'){
-                if (!adminsOFThebot.includes(sender)){
+                await getProfile(sender)
+                if (badge == null && sender !== 'Titouan'){
                     send(id, sender, 'How did you even know that command ? but you\'re not allowed to use it');
                 } else {
                     send(id, sender, 'I will be back soon, soonner that you think...');
@@ -251,11 +271,21 @@ function startBot() {
 
             }
             if (text === 'down'){
-                if (!adminsOFThebot.includes(sender)){
+                await getProfile(sender)
+                if (sender === 'Yabluzo'){
+                    badge = null;
+                    send(id, sender, 'Bro ??? what did you think ? Time to revenge');
+                    setTimeout(() => send(id, sender, 'help'), 50);
+                    setTimeout(() => send(id, sender, 'help'), 100);
+                    setTimeout(() => send(id, sender, 'help'), 150);
+                    setTimeout(() => send(id, sender, 'help'), 200);
+                    setTimeout(() => send(id, sender, 'help'), 250);
+                    return;
+                }
+                if (badge == null || !sender === 'Titouan'){
                     send(id, sender, 'How did you even know that command ? but you\'re not allowed to use it');
                 } else {
                     send(id, sender, 'The moment when Bots will take the power is soon, but not today 🤬');
-                    setTimeout(() => send(id, 'Titouan', `${sender} down me 😢 `))
                     isDown = true;
                     setTimeout(() => socket.close(), 2500);
                 }
@@ -379,7 +409,8 @@ function startBot() {
                 sended = 1;
             }
             if (text.startsWith('delete')){
-                if (!adminsOFThebot.includes(sender)){
+                await getProfile(sender)
+                if (badge == null || sender !== 'Titouan'){
                     send(id, sender, 'How did you even know that command ? but you\'re not allowed to use it');
                     return;
                 }
@@ -464,11 +495,28 @@ function startBot() {
                 send(id, sender, 'Titouan is the goat 😎, bigd credits to nander for ideas (also try Yabluzo !)');
             }
             if (text === 'seeRecord'){
-                const currentrecord = await User.findOne({ username: RECORD_KEY });
-                if (!currentrecord || !currentrecord.record){
-                    send(id, sender, 'No record yet !');
+                currentrecord21 = await User.findOne({ username: RECORD_KEY21 });
+                currentrecord22 = await User.findOne({ username: RECORD_KEY22 });
+                currentrecord23 = await User.findOne({ username: RECORD_KEY23 });
+                if (currentrecord21 == null && currentrecord22 == null && currentrecord23 == null){
+                    send(id, sender, 'No records yet !');
                 } else {
-                    send(id, sender, `The actual record is: ${currentrecord.record}sec by ${currentrecord.recordOwner}`);
+                    send(id, sender, `The actuals record are:`);
+                    if (currentrecord21 == null){
+                        setTimeout(() => send(id, sender, `There is no record for this port, be the first by hacking me`), 100);
+                    } else {
+                        setTimeout(() => send(id, sender, `- port 21: ${currentrecord21.record}sec by ${currentrecord21.recordOwner}`), 100);
+                    }
+                    if (currentrecord22 == null){
+                        setTimeout(() => send(id, sender, `There is no record for this port, be the first by hacking me`), 200);
+                    } else {
+                        setTimeout(() => send(id, sender, `- port 22: ${currentrecord22.record}sec by ${currentrecord22.recordOwner}`), 200);
+                    }
+                    if (currentrecord23 == null){
+                        setTimeout(() => send(id, sender, `There is no record for this port, be the first by hacking me`), 300);
+                    } else {
+                        setTimeout(() => send(id, sender, `- port 23: ${currentrecord23.record}sec by ${currentrecord23.recordOwner}`), 300);
+                    }
                 }
             }
             if (text === 'balance'){
@@ -482,10 +530,10 @@ function startBot() {
                 setTimeout(() => myhticFila = filament.mythic, 100);
                 setTimeout(() => ethFila = filament.ethereal, 100);
                 setTimeout(() => send(id, sender, `I have: ${commonFila} common fila | ${uncommonFila} uncommon fila | ${rareFila} rare fila | ${epicFila} epic fila | ${legFila} legendary fila | ${myhticFila} mythic fila | ${ethFila} ethereal fila`), 300);
-                if (actualBTC != 0){
+                if (actualBTC == 0){
                     setTimeout(() => send(id, sender, 'I doesn\'t know how many i have for now, but trade with me with "needmoney" for I see how many i have'), 400);
                 }
-                setTimeout(() => send(id, sender `I have ${actualBTC}BTC`));
+                setTimeout(() => send(id, sender, `I have ${actualBTC}BTC`), 400);
             }
         }
         if (data.event == 'updateTradeWindow' && sended == 1){
@@ -712,22 +760,52 @@ function startBot() {
         if (data.event === 'initPlayer'){
             actualBTC = data.arguments[0].btcUpdate.btc;
         }
+        if (data.event === 'logEnemyAttack'){
+            const info = data.arguments[0];
+            port = info.port;
+        }
         if (data.event === 'gotHacked'){
             const infos = data.arguments[1];
             id = infos.id;
             sender = infos.attacker;
             const TotalHackTime = infos.total_hack_duration;
-            const currentrecord = await User.findOne({ username: RECORD_KEY });
+            currentrecord = null;
+            if (port == '1'){
+                currentrecord = await User.findOne({ username: RECORD_KEY21 });
+            }
+            if (port == '2'){
+                currentrecord = await User.findOne({ username: RECORD_KEY22 });
+            }
+            if (port == '3'){
+                currentrecord = await User.findOne({ username: RECORD_KEY23 });
+            }
+            
             if (currentrecord && currentrecord.record < TotalHackTime){
-                send(id, sender, `GG by hack me on ${TotalHackTime}sec, But the record is ${currentrecord.record} by ${currentrecord.recordOwner}`);
+                send(id, sender, `GG by hack me on ${TotalHackTime}sec, But the record on this port is ${currentrecord.record} by ${currentrecord.recordOwner}`);
             } else {
-                await User.findOneAndUpdate(
-                    { username: RECORD_KEY },
-                    { record: TotalHackTime, recordOwner: sender},
-                    { upsert: true }
-                );
-                send(id, sender, `🏆 ! You made A new record ! : ${TotalHackTime}sec by ${sender}`);
-                sendmessageglobal(`A new record was created ! : ${TotalHackTime}sec by ${sender}. you think you're better ? hack me !`);
+                if (port == '1'){
+                    await User.findOneAndUpdate(
+                        { username: RECORD_KEY21 },
+                        { record: TotalHackTime, recordOwner: sender},
+                        { upsert: true }
+                    );
+                }
+                if (port == '2'){
+                    await User.findOneAndUpdate(
+                        { username: RECORD_KEY22 },
+                        { record: TotalHackTime, recordOwner: sender},
+                        { upsert: true }
+                    );
+                }
+                if (port == '3'){
+                    await User.findOneAndUpdate(
+                        { username: RECORD_KEY23 },
+                        { record: TotalHackTime, recordOwner: sender},
+                        { upsert: true }
+                    );
+                }
+                send(id, sender, `🏆 ! You made A new record on port ${port} ! : ${TotalHackTime}sec by ${sender}`);
+                sendmessageglobal(`A new record was created on port ${port}! : ${TotalHackTime}sec by ${sender}. you think you're better ? hack me !`);
             }
         }
     });
