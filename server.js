@@ -808,7 +808,6 @@ function startBot() {
                     );
                 }
                 send(id, sender, `🏆 ! You made A new record on port ${port} ! : ${TotalHackTime}sec by ${sender}`);
-                sendmessageglobal(`A new record was created on port ${port}! : ${TotalHackTime}sec by ${sender}. you think you're better ? hack me !`);
             }
         }
     });
