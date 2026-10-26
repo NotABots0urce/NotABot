@@ -255,7 +255,7 @@ function startBot() {
             }
             if (text.startsWith('seeBTC')){
                 const args = text.split(' ');
-                const theid = args[1];
+                theid = args[1];
                 
                 if (!args) {
                     send(id, sender, 'Please set an id after seeBTC ex: seeBTC hdjdbdid544585d_df4');
