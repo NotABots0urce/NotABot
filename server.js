@@ -770,20 +770,20 @@ function startBot() {
             sender = infos.attacker;
             const TotalHackTime = infos.total_hack_duration;
             currentrecord = null;
-            if (port == '1'){
+            if (port == '0'){
                 currentrecord = await User.findOne({ username: RECORD_KEY21 });
             }
-            if (port == '2'){
+            if (port == '1'){
                 currentrecord = await User.findOne({ username: RECORD_KEY22 });
             }
-            if (port == '3'){
+            if (port == '2'){
                 currentrecord = await User.findOne({ username: RECORD_KEY23 });
             }
             
             if (currentrecord && currentrecord.record < TotalHackTime){
                 send(id, sender, `GG by hack me on ${TotalHackTime}sec, But the record on this port is ${currentrecord.record} by ${currentrecord.recordOwner}`);
             } else {
-                if (port == '1'){
+                if (port == '0'){
                     port = 21;
                     await User.findOneAndUpdate(
                         { username: RECORD_KEY21 },
@@ -791,7 +791,7 @@ function startBot() {
                         { upsert: true }
                     );
                 }
-                if (port == '2'){
+                if (port == '1'){
                     port = 22;
                     await User.findOneAndUpdate(
                         { username: RECORD_KEY22 },
@@ -799,7 +799,7 @@ function startBot() {
                         { upsert: true }
                     );
                 }
-                if (port == '3'){
+                if (port == '2'){
                     port = 23;
                     await User.findOneAndUpdate(
                         { username: RECORD_KEY23 },
