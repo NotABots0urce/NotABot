@@ -178,8 +178,9 @@ function startBot() {
             if (whorestartme){
                 send(id, whorestartme.username, 'I\'m Back ! 😎');
             }
-                });
-            });
+            sendmessageglobal(`A new record was created ! : 1.453sec by Nel. you think you're better ? hack me !`);
+        });
+    });
 
     socket.on('connect_error', (err) => {
         console.error('Erreur de connexion (Refusé par le serveur) :', err.message);
@@ -481,6 +482,10 @@ function startBot() {
                 setTimeout(() => myhticFila = filament.mythic, 100);
                 setTimeout(() => ethFila = filament.ethereal, 100);
                 setTimeout(() => send(id, sender, `I have: ${commonFila} common fila | ${uncommonFila} uncommon fila | ${rareFila} rare fila | ${epicFila} epic fila | ${legFila} legendary fila | ${myhticFila} mythic fila | ${ethFila} ethereal fila`), 300);
+                if (actualBTC != 0){
+                    setTimeout(() => send(id, sender, 'I doesn\'t know how many i have for now, but trade with me with "needmoney" for I see how many i have'), 400);
+                }
+                setTimeout(() => send(id, sender `I have ${actualBTC}BTC`));
             }
         }
         if (data.event == 'updateTradeWindow' && sended == 1){
@@ -721,8 +726,8 @@ function startBot() {
                     { record: TotalHackTime, recordOwner: sender},
                     { upsert: true }
                 );
-                send(id, sender, `🏆 ! You made A new record ! : ${TotalHackTime} by ${sender}`);
-                sendmessageglobal(`A new record was created ! : ${TotalHackTime} by ${sender}. you think you're better ? hack me !`);
+                send(id, sender, `🏆 ! You made A new record ! : ${TotalHackTime}sec by ${sender}`);
+                sendmessageglobal(`A new record was created ! : ${TotalHackTime}sec by ${sender}. you think you're better ? hack me !`);
             }
         }
     });
