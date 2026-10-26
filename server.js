@@ -106,24 +106,23 @@ function startBot() {
     function sends0urcemail(id, from, to, msg){
         socket.emit('playerInput', {event: 'sendmail', id: id, username: from, to: to, message: msg});
     }
-    async function getBTCofmate(theid){
-        socket.emit('playerInput',{event: 'getPlayerProfile',id: theid}), (res) => {
+    async function getBTCofmate(theid) {
+        socket.emit('playerInput', { event: 'getPlayerProfile', id: theid }, (res) => {
             try {
-                if (res.status === 'success'){
+                if (res.status === 'success') {
                     hisBTC = res.data.btc.toFixed(8);
                     hisname = res.data.username;
                     send(id, sender, `${hisname} has ${hisBTC}BTC`);
                 } else {
-                    send(id, sender, 'plesae provide a valid id');
+                    send(id, sender, 'please provide a valid id');
                     hisBTC = null;
                     hisname = null;
-                    return;
                 }
             } catch (e) {
                 hisBTC = null;
                 hisname = null;
             }
-        }
+        });
     }
     async function getProfile(sender){
         try {
