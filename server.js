@@ -269,25 +269,16 @@ function startBot() {
             if (text === 'ping'){
                 send(id, sender, 'pong 🏓');
             }
-            if (text.startsWith('seeBTC') && !text.startsWith('seeBTCFrom')){
-                const args = text.split(' ');
-                theid = args[1];
-                
-                if (!args) {
-                    send(id, sender, 'Please set an id after seeBTC ex: seeBTC hdjdbdid544585d_df4');
-                } else {
-                    getBTCofmate(theid);
-                }
-            }
             if (text.startsWith('commands')) {
                 send(id, sender, 'list of commands:');
                 setTimeout(() => send(id, sender, '- filaPrice (see the fila price (2026))'), 700);
                 setTimeout(() => send(id, sender, '- ping (awnser pong 🏓 lol'), 900);
-                setTimeout(() => send(id, sender, '- tradeCommon or trade(the rarety you want with a MAJUSCULE), I will print you fila for fila price'), 900);
-                setTimeout(() => send(id, sender, '- needmoney, I will buy you filament ⚠️ There is an autoshredder, I will never give back the smae items, this is not for more inventory space ⚠️'), 900);
-                setTimeout(() => send(id, sender, '- marketplace: enter the marketplace'), 700);
-                setTimeout(() => send(id, sender, '- seeRecord: I will send the record of the fatest hack to me'), 700);
-                setTimeout(() => send(id, sender, '- goat: want to see ? type "goat"'), 700);
+                setTimeout(() => send(id, sender, '- tradeCommon or trade(the rarety you want with a MAJUSCULE), I will print you fila for fila price'), 950);
+                setTimeout(() => send(id, sender, '- needmoney, I will buy you filament ⚠️ There is an autoshredder, I will never give back the smae items, this is not for more inventory space ⚠️'), 1000);
+                setTimeout(() => send(id, sender, '- marketplace: enter the marketplace'), 1050);
+                setTimeout(() => send(id, sender, '- seeRecord: I will send the record of the fatest hack to me'), 1100);
+                setTimeout(() => send(id, sender, '- goat: want to see ? type "goat"'), 1150);
+                setTimeout(() => send(id, sender, '- seeBTC <name>, I will send the BTC of the person mentionned'), 1200);
                 shredAllItems();
             }
 
@@ -456,10 +447,10 @@ function startBot() {
                 console.log(trade);
                 sended = 1;
             }
-            if (text.startsWith('seeBTCFrom')){
+            if (text.startsWith('seeBTC')){
                 const args = text.split(' ');
                 if (!args){
-                    return send(id, sender, 'please provide a valid name after seeBtcFrom ex: seeBTCFrom Titouan');
+                    return send(id, sender, 'please provide a valid name after seeBTC ex: seeBTC Titouan');
                 } else {
                     const name = args[1];
                     getbroBTC(name);
