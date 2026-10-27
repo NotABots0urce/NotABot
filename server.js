@@ -269,7 +269,7 @@ function startBot() {
             if (text === 'ping'){
                 send(id, sender, 'pong 🏓');
             }
-            if (text.startsWith('seeBTC')){
+            if (text.startsWith('seeBTC') && !text.startsWith('seeBTCFrom')){
                 const args = text.split(' ');
                 theid = args[1];
                 
