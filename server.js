@@ -43,7 +43,7 @@ setInterval(() => {
 }, 15 * 1000);
 const SERVER_URL = 'https://s0urce.io';
 const MY_PLAYER_ID = '69bfe7652baa455bee3c111a';
-const CONNECT_SID = 's%3AX8O3iveyrySaVn6nf8woCZX6aQczPrEC.BUxBP%2FKp6DkM5bCx0uRZZ0h6J7gN0TskAWF3G%2FrC4ws';
+const CONNECT_SID = 's%3ANO_vXiUrz8nbZQFIEG0cT397FFY4whDE.18q8gpKV2pJ3O%2B8LArcTyEyb%2F1U1yolfRJWhTpYz9Vc';
 const adminsOFThebot = ['Titouan', 'NanderTGA', 'Nel'];
 let sended = 0;
 let accepted = null;
