@@ -271,14 +271,14 @@ function startBot() {
             }
             if (text.startsWith('commands')) {
                 send(id, sender, 'list of commands:');
-                setTimeout(() => send(id, sender, '- filaPrice (see the fila price (2026))'), 700);
-                setTimeout(() => send(id, sender, '- ping (awnser pong 🏓 lol'), 900);
-                setTimeout(() => send(id, sender, '- tradeCommon or trade(the rarety you want with a MAJUSCULE), I will print you fila for fila price'), 1000);
-                setTimeout(() => send(id, sender, '- needmoney, I will buy you filament ⚠️ There is an autoshredder, I will never give back the smae items, this is not for more inventory space ⚠️'), 2000);
-                setTimeout(() => send(id, sender, '- marketplace: enter the marketplace'), 3000);
-                setTimeout(() => send(id, sender, '- seeRecord: I will send the record of the fatest hack to me'), 4000);
-                setTimeout(() => send(id, sender, '- goat: want to see ? type "goat"'), 5000);
-                setTimeout(() => send(id, sender, '- seeBTC <name>, I will send the BTC of the person mentionned'), 6000);
+                setTimeout(() => send(id, sender, '- filaPrice (see the fila price (2026))'), 1000);
+                setTimeout(() => send(id, sender, '- ping (awnser pong 🏓 lol'), 2000);
+                setTimeout(() => send(id, sender, '- tradeCommon or trade(the rarety you want with a MAJUSCULE), I will print you fila for fila price'), 3000);
+                setTimeout(() => send(id, sender, '- needmoney, I will buy you filament ⚠️ There is an autoshredder, I will never give back the smae items, this is not for more inventory space ⚠️'), 4000);
+                setTimeout(() => send(id, sender, '- marketplace: enter the marketplace'), 5000);
+                setTimeout(() => send(id, sender, '- seeRecord: I will send the record of the fatest hack to me'), 6000);
+                setTimeout(() => send(id, sender, '- goat: want to see ? type "goat"'), 7000);
+                setTimeout(() => send(id, sender, '- seeBTC <name>, I will send the BTC of the person mentionned'), 8000);
                 shredAllItems();
             }
 
