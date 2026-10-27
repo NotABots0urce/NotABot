@@ -88,6 +88,13 @@ let currentrecord23 = null;
 let theid = null;
 let hisBTC = null;
 let hisname = null;
+let commonToEth = 0.000494;
+let uncommonToEth = 0.001481;
+let rareToEth = 0.004444;
+let epicToEth = 0.01333;
+let legToEth = 0.0667;
+let mythicToEth = 0.2;
+let totaleth = 0;
 function startBot() {
     console.log('Tentative de connexion Socket.IO...');
     console.log('Longueur du cookie :', CONNECT_SID.length, '| début :', CONNECT_SID.slice(0, 5));
@@ -571,13 +578,21 @@ function startBot() {
                 grabLootFila();
                 console.log('grabbed loot');
                 setTimeout(() => commonFila = filament.common, 100);
+                setTimeout(() => totaleth += commonFila * commonToEth, 200);
                 setTimeout(() => uncommonFila = filament.uncommon, 100);
+                setTimeout(() => totaleth += commonFila * uncommonToEth, 200);
                 setTimeout(() => rareFila = filament.rare, 100);
+                setTimeout(() => totaleth += commonFila * rareToEth, 200);
                 setTimeout(() => epicFila = filament.epic, 100);
+                setTimeout(() => totaleth += commonFila * epicToEth, 200);
                 setTimeout(() => legFila = filament.legendary, 100);
+                setTimeout(() => totaleth += commonFila * legToEth, 200);
                 setTimeout(() => myhticFila = filament.mythic, 100);
+                setTimeout(() => totaleth += commonFila * mythic, 200);
                 setTimeout(() => ethFila = filament.ethereal, 100);
+                setTimeout(() => totaleth += ethFila, 200);
                 setTimeout(() => send(id, sender, `I have: ${commonFila} common fila | ${uncommonFila} uncommon fila | ${rareFila} rare fila | ${epicFila} epic fila | ${legFila} legendary fila | ${myhticFila} mythic fila | ${ethFila} ethereal fila`), 300);
+                setTimeout(() => send(id, sender, `That gives a total of: ${ethFila} Ethereal Fila`), 500);
                 if (actualBTC == 0){
                     setTimeout(() => send(id, sender, 'I doesn\'t know how many i have for now, but trade with me with "needmoney" for I see how many i have'), 400);
                 }
