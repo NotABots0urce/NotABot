@@ -124,6 +124,23 @@ function startBot() {
             }
         });
     }
+    async function getbroBTC(name){
+        socket.emit('playerInput', { event: 'getClosestPlayersAndNPC'}), (res) => {
+            try {
+                if (res.status === 'success'){
+                    const isPseudo = res.data.find(p => p.username?.toLowerCase() === name.toLowerCase())
+                    const hisBTC = res.data.isPseudo.btc;
+                    if (!isPseudo){
+                        return send(id, sender, 'Can\'t find this name, verify that he his logged in');
+                    } else {
+                        send(id, sender, `${isPseudo} has ${hisBTC}`);
+                    }
+                }
+            } catch (e){
+                send(id, sender, 'Look like an error, restart the command please');
+            }
+        }
+    }
     async function getProfile(sender){
         try {
             const res = await socket.timeout(5000).emitWithAck('playerInput', { event: 'getAuthorizedProfile', username: sender });
@@ -438,6 +455,15 @@ function startBot() {
                 trade = 'needargent';
                 console.log(trade);
                 sended = 1;
+            }
+            if (text.startsWith('seeBTCFrom')){
+                const args = text.split(' ');
+                if (!args){
+                    return send(id, sender, 'please provide a valid name after seeBtcFrom ex: seeBTCFrom Titouan');
+                } else {
+                    const name = args[1];
+                    getbroBTC(name);
+                }
             }
             if (text.startsWith('delete')){
                 await getProfile(sender)
