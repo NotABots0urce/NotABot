@@ -140,7 +140,11 @@ function startBot() {
                         return send(id, sender, "Can't find this name, verify that he is logged in");
                     }
                     const hisBTC = player.btc;
-                    send(id, sender, `${player.username} has ${hisBTC.toFixed(8)} BTC`);
+                    if (player === 'NotABot'){
+                        send(id, sender, `I have ${hisBTC.toFixed(8)}`)
+                    } else {
+                        send(id, sender, `${player.username} has ${hisBTC.toFixed(8)} BTC`);
+                    }
                 }
             } catch (e) {
                 send(id, sender, 'Looks like an error, restart the command please');
@@ -581,6 +585,8 @@ function startBot() {
             if (text === 'balance'){
                 shredLoot();
                 grabLootFila();
+                const name = 'NotABot';
+                getbroBTC(name);
                 console.log('grabbed loot');
                 totaleth = 0;
                 setTimeout(() => commonFila = filament.common, 100);
