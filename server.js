@@ -462,6 +462,7 @@ function startBot() {
                 if (!args){
                     return send(id, sender, 'please provide a valid name after seeBTC ex: seeBTC Titouan');
                 } else {
+                    send(id, sender, 'I have a bug');
                     const name = args[1];
                     getbroBTC(name);
                 }
