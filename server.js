@@ -95,39 +95,6 @@ let epicToEth = 0.01333;
 let legToEth = 0.0667;
 let mythicToEth = 0.2;
 let totaleth = 0;
-const shops = [
-    { name: "1101", url: 'https://padlet.com/1101_13/au-jyklq5da074b5wjo' },
-    { name: "alymbek", url: 'https://padlet.com/alymbek/alymbek-s-shop-fjwtdm0o1ihs3wjw' },
-    { name: "AnneCharistmia", url: 'https://padlet.com/AnChar/annecharistmia-s-inventory-uxtrrzl10gqb2n2t' },
-    { name: "averagebit", url: 'https://padlet.com/averagebit/averagebit-s-s0urce-shop-kt5bzcv41am8dtro' },
-    { name: "CannedBeans", url: 'https://padlet.com/CannedBeanss/stuff-b7ammmpm0vdkdjkx' },
-    { name: "Catopus", url: 'https://padlet.com/Catopus_the_sigma/eh-ill-do-that-later-i-wont-you-can-by-my-stuff-tho-y8crm2kw29fts7c1' },
-    { name: "d0t", url: 'https://padlet.com/d0t_/d0t-s-got-stuff-devuy5qyufmqic3d' },
-    { name: "darktechnopath", url: 'https://padlet.com/spnandy345/darktechnopath-s-shop-y0inxhn1ynoelesu' },
-    { name: "Darkspy", url: 'https://padlet.com/woripof736/darkspy-s-workshop-lx0zx21i3j3exl4d' },
-    { name: "DOGFINALBOSS", url: 'https://padlet.com/dogfinalboss/antagonists-shop-c3na9zfttphnk4wi' },
-    { name: "doowaap", url: 'https://padlet.com/8d76kkd2xk/sh0p-lh9qx908x01k3jgq' },
-    { name: "Everyone", url: 'https://padlet.com/Evryone/everyone-s-stall-fc91fk6y6cwa55xu' },
-    { name: "Flash98", url: 'https://padlet.com/Flash98/flash98-s-convenience-store-s0urce-io-4s7kfh7zwrrc089c' },
-    { name: "GRIM", url: 'https://padlet.com/lanconkillian/grim-s-shop-l41adlre55eo9b8g' },
-    { name: "HERMi", url: 'https://padlet.com/HERMi_Shop/hermi-s-item-shop-yyqy8tg8r26m8bvg' },
-    { name: "Hi9", url: 'https://padlet.com/Hi_firefly/firefly-s-store-g6rg8ye6jd0mllnk' },
-    { name: "hxck", url: 'https://padlet.com/hxck/hxck-s-shop-3x31cnpm8betiitq' },
-    { name: "IlikeBeans", url: 'https://padlet.com/ilikebean777/ilikebeans-s-shop-exama1gtwz179spk' },
-    { name: "jaice", url: 'https://padlet.com/mayanuss8/jaice-s-tiny-store-yxibhqgi1fxtmamr' },
-    { name: "LeenaTheOnion", url: 'https://padlet.com/LeenaTheOnion/leena-s-s0urce-shop-lk69n9jimlolidnq' },
-    { name: "lier9nier", url: 'https://padlet.com/lierlier9/lierlier9-1lfymh2wlt6s4sph' },
-    { name: "Nacom", url: 'https://padlet.com/nacom/regal-k3wvpthhfnse2pn0' },
-    { name: "Naleg", url: 'https://padlet.com/nalegproto/naleg-s-market-and-stuff-ywvxhump0winkbsb' },
-    { name: "Natan6779", url: 'https://padlet.com/natanschaller/natan6779-s-s0urce-io-shop-ne3uprtjqltebndh' },
-    { name: "natedawgggg", url: 'https://padlet.com/natey4483/natedawggg-s-shop-drn58c7c0fzv5vrc' },
-    { name: "Nel", url: 'https://padlet.com/NelTheNeat/nel-s-high-end-s0urce-io-corner-shop-bosqdtodsl0k29vd' },
-    { name: "Nokyte", url: 'https://padlet.com/nokytegamimg/nokyte-s-shop-abyumu5lkywntau0' },
-    { name: "PaulJ", url: 'https://padlet.com/paulj5/paulj-s-s0urce-io-shop-components-other-stuff-vp9zs9mr56cx9hql' },
-    { name: "Sebco55Yt", url: 'https://padlet.com/gunit1113/sebco55yt-store-3zc7jw277zt6xxq8' },
-    { name: "Tank", url: 'https://padlet.com/t4nk/tank-s-shop-ibq4rbf7i9ylw283' },
-    { name: "xXSpadeXx", url: 'https://padlet.com/t4nk/tank-s-shop-ibq4rbf7i9ylw283' }
-];
 function startBot() {
     console.log('Tentative de connexion Socket.IO...');
     console.log('Longueur du cookie :', CONNECT_SID.length, '| début :', CONNECT_SID.slice(0, 5));
@@ -369,11 +336,7 @@ function startBot() {
                 }
             }
             if (text === 'shops'){
-                shops.forEach(({ name, url, i}) => {
-                    setTimeout(() => {
-                        send(id, sender, `${name} shop, link: ${url}`);
-                    }, i * 500);
-                })
+                send(id, sender, `the shops are here, but ⚠️ this geme is considerated as "dead", so most doesn't active at this time`);
             }
             if (text === 'tradeCommon'){
                 send(id, sender, 'ok i will send you a trade reuqest, put a factor of 0.01BTC for a valid trade');
