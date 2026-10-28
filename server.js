@@ -242,6 +242,8 @@ function startBot() {
             if (whorestartme){
                 send(id, whorestartme.username, 'I\'m Back ! 😎');
             }
+            shredLoot();
+            grabLootFila();
         });
     });
 
@@ -577,6 +579,7 @@ function startBot() {
                 }
             }
             if (text === 'balance'){
+                shredLoot();
                 grabLootFila();
                 console.log('grabbed loot');
                 totaleth = 0;
