@@ -608,7 +608,6 @@ function startBot() {
                 if (actualBTC == 0){
                     setTimeout(() => send(id, sender, 'I doesn\'t know how many i have for now, but trade with me with "needmoney" for I see how many i have'), 400);
                 }
-                setTimeout(() => send(id, sender, `I have ${actualBTC.toFixed(8)}BTC`), 400);
             }
         }
         if (data.event == 'updateTradeWindow' && sended == 1){
