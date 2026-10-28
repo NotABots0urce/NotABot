@@ -140,7 +140,7 @@ function startBot() {
                         return send(id, sender, "Can't find this name, verify that he is logged in");
                     }
                     const hisBTC = player.btc;
-                    if (player === 'NotABot'){
+                    if (player.username === 'NotABot'){
                         send(id, sender, `I have ${hisBTC.toFixed(8)}`)
                     } else {
                         send(id, sender, `${player.username} has ${hisBTC.toFixed(8)} BTC`);
