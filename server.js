@@ -336,7 +336,8 @@ function startBot() {
                 }
             }
             if (text === 'shops'){
-                send(id, sender, `the shops are here, but ⚠️ this geme is considerated as "dead", so most doesn't active at this time`);
+                send(id, sender, `⚠️ this game is considerated as "dead", so most doesn't active at this time`);
+                setTimeout(() => send(id, sender, 'the shops are here: https://wiki.s0urce.io/wiki/Padlet_Shops'), 100);
             }
             if (text === 'tradeCommon'){
                 send(id, sender, 'ok i will send you a trade reuqest, put a factor of 0.01BTC for a valid trade');
