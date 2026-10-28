@@ -140,7 +140,7 @@ function startBot() {
                         return send(id, sender, "Can't find this name, verify that he is logged in");
                     }
                     const hisBTC = player.btc;
-                    send(id, sender, `${player.username} has ${hisBTC} BTC`);
+                    send(id, sender, `${player.username} has ${hisBTC.toFixed(8)} BTC`);
                 }
             } catch (e) {
                 send(id, sender, 'Looks like an error, restart the command please');
