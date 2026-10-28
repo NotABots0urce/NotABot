@@ -131,22 +131,21 @@ function startBot() {
             }
         });
     }
-    async function getbroBTC(name){
-        socket.emit('playerInput', { event: 'getClosestPlayersAndNPC'}), (res) => {
+    async function getbroBTC(name) {
+        socket.emit('playerInput', { event: 'getClosestPlayersAndNPC' }, (res) => {
             try {
-                if (res.status === 'success'){
-                    const isPseudo = res.data.find(p => p.username?.toLowerCase() === name.toLowerCase())
-                    const hisBTC = res.data.isPseudo.btc;
-                    if (!isPseudo){
-                        return send(id, sender, 'Can\'t find this name, verify that he his logged in');
-                    } else {
-                        send(id, sender, `${isPseudo} has ${hisBTC}`);
+                if (res.status === 'success') {
+                    const player = res.data.find(p => p.username?.toLowerCase() === name.toLowerCase());
+                    if (!player) {
+                        return send(id, sender, "Can't find this name, verify that he is logged in");
                     }
+                    const hisBTC = player.btc;
+                    send(id, sender, `${player.username} has ${hisBTC} BTC`);
                 }
-            } catch (e){
-                send(id, sender, 'Look like an error, restart the command please');
+            } catch (e) {
+                send(id, sender, 'Looks like an error, restart the command please');
             }
-        }
+        });
     }
     async function getProfile(sender){
         try {
@@ -462,7 +461,6 @@ function startBot() {
                 if (!args){
                     return send(id, sender, 'please provide a valid name after seeBTC ex: seeBTC Titouan');
                 } else {
-                    send(id, sender, 'I have a bug');
                     const name = args[1];
                     getbroBTC(name);
                 }
