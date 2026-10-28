@@ -579,6 +579,7 @@ function startBot() {
             if (text === 'balance'){
                 grabLootFila();
                 console.log('grabbed loot');
+                totaleth = 0;
                 setTimeout(() => commonFila = filament.common, 100);
                 setTimeout(() => totaleth += commonFila * commonToEth, 200);
                 setTimeout(() => uncommonFila = filament.uncommon, 100);
