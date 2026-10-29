@@ -43,8 +43,7 @@ setInterval(() => {
 }, 15 * 1000);
 const SERVER_URL = 'https://s0urce.io';
 const MY_PLAYER_ID = '69bfe7652baa455bee3c111a';
-const CONNECT_SID = 's%3ANO_vXiUrz8nbZQFIEG0cT397FFY4whDE.18q8gpKV2pJ3O%2B8LArcTyEyb%2F1U1yolfRJWhTpYz9Vc';
-const adminsOFThebot = ['Titouan', 'NanderTGA', 'Nel'];
+const CONNECT_SID = 's%3ATkzW8jAEKdH5I7eMMUFF0eol__XOPcB9.Dc7H0ocbKFAb1IYw819EX1ty2RQPvGe1a9iZtr8GGTc';
 let sended = 0;
 let accepted = null;
 let confirmed = null;
@@ -95,6 +94,8 @@ let epicToEth = 0.01333;
 let legToEth = 0.0667;
 let mythicToEth = 0.2;
 let totaleth = 0;
+waitingforconfirmread = 1;
+const namestosend = [];
 function startBot() {
     console.log('Tentative de connexion Socket.IO...');
     console.log('Longueur du cookie :', CONNECT_SID.length, '| début :', CONNECT_SID.slice(0, 5));
@@ -112,24 +113,6 @@ function startBot() {
     }
     function sends0urcemail(id, from, to, msg){
         socket.emit('playerInput', {event: 'sendmail', id: id, username: from, to: to, message: msg});
-    }
-    async function getBTCofmate(theid) {
-        socket.emit('playerInput', { event: 'getPlayerProfile', id: theid }, (res) => {
-            try {
-                if (res.status === 'success') {
-                    hisBTC = res.data.btc.toFixed(8);
-                    hisname = res.data.username;
-                    send(id, sender, `${hisname} has ${hisBTC}BTC`);
-                } else {
-                    send(id, sender, 'please provide a valid id');
-                    hisBTC = null;
-                    hisname = null;
-                }
-            } catch (e) {
-                hisBTC = null;
-                hisname = null;
-            }
-        });
     }
     async function getbroBTC(name) {
         socket.emit('playerInput', { event: 'getClosestPlayersAndNPC' }, (res) => {
@@ -150,6 +133,19 @@ function startBot() {
                 send(id, sender, 'Looks like an error, restart the command please');
             }
         });
+    }
+    async function getonlinePlayers(name, message) {
+        socket.emit('playerInput', { event: 'getClosestPlayersAndNPC' }, (res) => {
+            try {
+                if (res.status === 'success') {
+                    const cibledname = res.data.find(p => p.username.toLowerCase() === name.toLowerCase());
+                    if (!cibledname) return send(id, sender, `OK, will send to ${name}: ${message}`);
+                    send(id, sender, `${name} is online, u can send the message yourself`);
+                }
+            } catch (e) {
+                send(id, sender, 'An error occurend, retype the command pls');
+            }
+        })
     }
     async function getProfile(sender){
         try {
@@ -454,6 +450,24 @@ function startBot() {
                     print(want);
                 }
                 
+            }
+            if (text.startsWith('send')){
+                const args = text.split(' ');
+                if (args.length < 3){
+                    send(id, sender, 'Please send a valid pseudo and a message ex: send Titouan You\'re a BG');
+                } else {
+                    const name = args[1];
+                    const message = args.slice(2).join(' ');
+                    getonlinePlayers(name, message);
+                    namestosend.push(name);
+                    waitingforconfirmread = 1;
+                }
+            }
+            if (text === 'Y'){
+                if (waitingforconfirmread == 0) return send(id, sender, 'That command only works when you have a message sended by another poeple via me');
+                send(id, sender, 'OK, this message will never appear in the future');
+                waitingforconfirmread = 0;
+                send.deleteOne(sender);
             }
             if (text === 'needmoney'){
                 send(id, sender, 'Ok, i will send a trade request, push your items and i will buy them for file price (see with /filaPrice)');
