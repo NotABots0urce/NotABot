@@ -141,7 +141,7 @@ function startBot() {
                     }
                     const hisBTC = player.btc;
                     if (player.username === 'NotABot'){
-                        send(id, sender, `I have ${hisBTC.toFixed(8)}`)
+                        send(id, sender, `I have ${hisBTC.toFixed(8)}BTC`)
                     } else {
                         send(id, sender, `${player.username} has ${hisBTC.toFixed(8)} BTC`);
                     }
