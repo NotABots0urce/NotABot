@@ -24,6 +24,13 @@ const announceSchema = new mongoose.Schema({
     price:       { type: String, required: true },
     description: { type: String, default: '' },
 });
+const sendSchema = new mongoose.Schema({
+    from: {type: String, required: true},
+    to:   {type: String, required: true},
+    content: {type: String, required: true},
+    readed: {type: Number, required: false, default: 0}
+});
+const Send = mongoose.model('Send', sendSchema);
 const Announce = mongoose.model('Announce', announceSchema);
 const User = mongoose.model('User', userSchema);
 const RECORD_KEY21 = '21_RECORD';
@@ -94,6 +101,8 @@ let epicToEth = 0.01333;
 let legToEth = 0.0667;
 let mythicToEth = 0.2;
 let totaleth = 0;
+let code = null;
+let Tradevalue = false;
 waitingforconfirmread = 1;
 const namestosend = [];
 function startBot() {
@@ -177,6 +186,7 @@ function startBot() {
     function shredLoot(){
         socket.emit('playerInput',{event: 'shredComponentLoot'}, (res) => {
             filament = res.filament;
+            console.log('loot shredded');
         })
     }
     function sendTradRequest(user){
@@ -243,7 +253,7 @@ function startBot() {
                 send(id, whorestartme.username, 'I\'m Back ! 😎');
             }
             shredLoot();
-            grabLootFila();
+            setTimeout(() => grabLootFila(), 500);
         });
     });
 
@@ -328,7 +338,7 @@ function startBot() {
                     setTimeout(() => send(id, sender, 'help'), 250);
                     return;
                 }
-                if (badge == null || !sender === 'Titouan'){
+                if (badge == null || sender !== 'Titouan'){
                     send(id, sender, 'How did you even know that command ? but you\'re not allowed to use it');
                 } else {
                     send(id, sender, 'The moment when Bots will take the power is soon, but not today 🤬');
@@ -339,6 +349,22 @@ function startBot() {
             if (text === 'shops'){
                 send(id, sender, `⚠️ this game is considerated as "dead", so most doesn't active at this time`);
                 setTimeout(() => send(id, sender, 'the shops are here: https://wiki.s0urce.io/wiki/Padlet_Shops'), 100);
+            }
+            if (text.startsWith('code:')){
+                const args = text.split(' ');
+                if (args > 2){
+                    send(id, sender, 'pls send only the code after code ex: code: Dh2sid8564TGuHgF');
+                    return;
+                }
+                if (args < 2){
+                    send(id, sender, 'pls send the code after code ex: code: Dh2sid8564TGuHgF');
+                    return;
+                }
+                const codesended = args[1];
+                if (codesended === code){
+                    send(id, sender, 'Is this for shred or try to have a great item ? awnser with the type you want(CPU; PSU; GPU; FW) or just N for a random item');
+                    Tradevalue = true;
+                }
             }
             if (text === 'tradeCommon'){
                 send(id, sender, 'ok i will send you a trade reuqest, put a factor of 0.01BTC for a valid trade');
@@ -410,48 +436,53 @@ function startBot() {
                 sended = 1;
                 sendedchoice = 0;
             }
-            if (text === 'PSU'){
+            if (text === 'PSU' && Tradevalue == true){
                 send(id, sender, `Ok i wil print ${goodornot} ${trade} PSU`)
                 want = `${trade}PSU`;
                 console.log(want);
                 for (let i = 0; i < goodornot; i++){
                     print(want);
                 }
+                Tradevalue = false;
             }
-            if (text === 'CPU'){
+            if (text === 'CPU' && Tradevalue == true){
                 send(id, sender, `Ok i wil print ${goodornot} ${trade} CPU`)
                 want = `${trade}CPU`;
                 console.log(want);
                 for (let i = 0; i < goodornot; i++){
                     print(want);
                 }
+                Tradevalue = false;
             }
-            if (text === 'FW'){
+            if (text === 'FW' && Tradevalue == true){
                 send(id, sender, `Ok i wil print ${goodornot} ${trade} FW`)
                 want = `${trade}Firewall`;
                 console.log(want);
                 for (let i = 0; i < goodornot; i++){
                     print(want);
                 }
+                Tradevalue = false;
             }
-            if (text === 'GPU'){
+            if (text === 'GPU' && Tradevalue == true){
                 send(id, sender, `Ok i wil print ${goodornot} ${trade} GPU`)
                 want = `${trade}GPU`;
                 console.log(want);
                 for (let i = 0; i < goodornot; i++){
                     print(want);
                 }
+                Tradevalue = false;
             }
-            if (text === 'N'){
+            if (text === 'N' && Tradevalue == true){
                 send(id, sender, `Ok i wil print ${goodornot} ${trade} basic item(CPU)`)
                 want = `${trade}CPU`;
                 console.log(want);
                 for (let i = 0; i < goodornot; i++){
                     print(want);
                 }
+                Tradevalue = false;
                 
             }
-            if (text.startsWith('send')){
+            if (text.startsWith('transmet')){
                 const args = text.split(' ');
                 if (args.length < 3){
                     send(id, sender, 'Please send a valid pseudo and a message ex: send Titouan You\'re a BG');
@@ -459,7 +490,7 @@ function startBot() {
                     const name = args[1];
                     const message = args.slice(2).join(' ');
                     getonlinePlayers(name, message);
-                    namestosend.push(name);
+                    await Send.create({ from: sender, to: name, content: message });
                     waitingforconfirmread = 1;
                 }
             }
@@ -467,7 +498,7 @@ function startBot() {
                 if (waitingforconfirmread == 0) return send(id, sender, 'That command only works when you have a message sended by another poeple via me');
                 send(id, sender, 'OK, this message will never appear in the future');
                 waitingforconfirmread = 0;
-                send.deleteOne(sender);
+                await Send.deleteOne({ to: sender });
             }
             if (text === 'needmoney'){
                 send(id, sender, 'Ok, i will send a trade request, push your items and i will buy them for file price (see with /filaPrice)');
@@ -478,7 +509,7 @@ function startBot() {
             }
             if (text.startsWith('seeBTC')){
                 const args = text.split(' ');
-                if (!args){
+                if (args < 2){
                     return send(id, sender, 'please provide a valid name after seeBTC ex: seeBTC Titouan');
                 } else {
                     const name = args[1];
@@ -598,27 +629,27 @@ function startBot() {
             }
             if (text === 'balance'){
                 shredLoot();
-                grabLootFila();
+                setTimeout(() => grabLootFila(), 500);
                 const name = 'NotABot';
                 getbroBTC(name);
                 console.log('grabbed loot');
                 totaleth = 0;
-                setTimeout(() => commonFila = filament.common, 100);
-                setTimeout(() => totaleth += commonFila * commonToEth, 200);
-                setTimeout(() => uncommonFila = filament.uncommon, 100);
-                setTimeout(() => totaleth += uncommonFila * uncommonToEth, 200);
-                setTimeout(() => rareFila = filament.rare, 100);
-                setTimeout(() => totaleth += rareFila * rareToEth, 200);
-                setTimeout(() => epicFila = filament.epic, 100);
-                setTimeout(() => totaleth += epicFila * epicToEth, 200);
-                setTimeout(() => legFila = filament.legendary, 100);
-                setTimeout(() => totaleth += legFila * legToEth, 200);
-                setTimeout(() => myhticFila = filament.mythic, 100);
-                setTimeout(() => totaleth += myhticFila * mythicToEth, 200);
-                setTimeout(() => ethFila = filament.ethereal, 100);
-                setTimeout(() => totaleth += ethFila, 200);
-                setTimeout(() => send(id, sender, `I have: ${commonFila} common fila | ${uncommonFila} uncommon fila | ${rareFila} rare fila | ${epicFila} epic fila | ${legFila} legendary fila | ${myhticFila} mythic fila | ${ethFila} ethereal fila`), 300);
-                setTimeout(() => send(id, sender, `That gives a total of: ${totaleth} Ethereal Fila`), 500);
+                setTimeout(() => commonFila = filament.common, 600);
+                setTimeout(() => totaleth += commonFila * commonToEth, 700);
+                setTimeout(() => uncommonFila = filament.uncommon, 600);
+                setTimeout(() => totaleth += uncommonFila * uncommonToEth, 700);
+                setTimeout(() => rareFila = filament.rare, 600);
+                setTimeout(() => totaleth += rareFila * rareToEth, 700);
+                setTimeout(() => epicFila = filament.epic, 600);
+                setTimeout(() => totaleth += epicFila * epicToEth, 700);
+                setTimeout(() => legFila = filament.legendary, 600);
+                setTimeout(() => totaleth += legFila * legToEth, 700);
+                setTimeout(() => myhticFila = filament.mythic, 600);
+                setTimeout(() => totaleth += myhticFila * mythicToEth, 700);
+                setTimeout(() => ethFila = filament.ethereal, 600);
+                setTimeout(() => totaleth += ethFila, 700);
+                setTimeout(() => send(id, sender, `I have: ${commonFila} common fila | ${uncommonFila} uncommon fila | ${rareFila} rare fila | ${epicFila} epic fila | ${legFila} legendary fila | ${myhticFila} mythic fila | ${ethFila} ethereal fila`), 800);
+                setTimeout(() => send(id, sender, `That gives a total of: ${totaleth} Ethereal Fila`), 1000);
                 if (actualBTC == 0){
                     setTimeout(() => send(id, sender, 'I doesn\'t know how many i have for now, but trade with me with "needmoney" for I see how many i have'), 400);
                 }
@@ -658,6 +689,7 @@ function startBot() {
                         if (sendedchoice !== 1){
                             setTimeout(() => send(id, sender, 'Is this for shred or try to have a great item ? awnser with the type you want(CPU; PSU; GPU; FW) or just N for a random item'), 700);
                             sendedchoice = 1;
+                            Tradevalue = true;
                         }   
                     }
                 } else {
@@ -904,6 +936,18 @@ function startBot() {
                 });
             }
         }
+        if (data.event === 'gotGlobalRoomMessage'){
+            const thereissomeonetosend = await Send.findOne({ to: data.arguments[0].content.replace(' joined the game!', '') });
+            if (thereissomeonetosend) {
+                waitingforconfirmread = 1;
+                sender = thereissomeonetosend.to;
+                id = thereissomeonetosend.id;
+                const content = thereissomeonetosend.content;
+                const to = thereissomeonetosend.from;
+                send(id, sender, `You have a message from ${to}: ${content}`);
+                setTimeout(() => send(id, sender, 'If you\'ve read that message please send "Y"'), 200);
+            }
+        }
     });
     const slotsFilaAgent = 290;
     const delai = slotsFilaAgent * 60 * 1000 * 3.2;
@@ -916,6 +960,12 @@ function startBot() {
         const { from, to } = req.body;
         sends0urcemail(id, from, to, `${from} want to buy you something !`)
     });
+    app.post('/sendcodefornewlevel', async (req, res) => {
+        res.sendStatus(200);
+        const { codetransmit, tradetype } = req.body;
+        code = codetransmit;
+        trade = tradetype;
+    })
 }
 
 startBot();
