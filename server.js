@@ -351,7 +351,7 @@ function startBot() {
                 setTimeout(() => send(id, sender, 'the shops are here: https://wiki.s0urce.io/wiki/Padlet_Shops'), 100);
             }
             if (text.startsWith('code:')){
-                const args = text.split(' ');
+                const args = text.trim().split(/\s+/);
                 if (args.length > 2){
                     send(id, sender, 'pls send only the code after code ex: code: Dh2sid8564TGuHgF');
                     return;
