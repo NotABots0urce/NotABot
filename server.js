@@ -50,7 +50,7 @@ setInterval(() => {
 }, 15 * 1000);
 const SERVER_URL = 'https://s0urce.io';
 const MY_PLAYER_ID = '69bfe7652baa455bee3c111a';
-const CONNECT_SID = 's%3ATkzW8jAEKdH5I7eMMUFF0eol__XOPcB9.Dc7H0ocbKFAb1IYw819EX1ty2RQPvGe1a9iZtr8GGTc';
+const CONNECT_SID = 's%3AXoVrBJc1zEGXQzJz4Od7WKz33IpPoFHR.diriRNBK9aYJ4nfia2SVkEMjk6hXuSYs92H9GA2y%2Fu0';
 let sended = 0;
 let accepted = null;
 let confirmed = null;
