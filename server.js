@@ -352,16 +352,17 @@ function startBot() {
             }
             if (text.startsWith('code:')){
                 const args = text.split(' ');
-                if (args > 2){
+                if (args.length > 2){
                     send(id, sender, 'pls send only the code after code ex: code: Dh2sid8564TGuHgF');
                     return;
                 }
-                if (args < 2){
+                if (args.length < 2){
                     send(id, sender, 'pls send the code after code ex: code: Dh2sid8564TGuHgF');
                     return;
                 }
                 const codesended = args[1];
                 if (codesended === code){
+                    sendTradRequest(sender)
                     send(id, sender, 'Is this for shred or try to have a great item ? awnser with the type you want(CPU; PSU; GPU; FW) or just N for a random item');
                     Tradevalue = true;
                 }
