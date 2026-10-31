@@ -42,9 +42,9 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 process.on('uncaughtException', (err) => console.error('Erreur :', err));
-http.createServer((req, res) => {
-    res.end('bot en ligne');
-}).listen(process.env.PORT || 3000);
+app.get('/', (req, res) => res.end('bot en ligne'));
+app.get('/ping', (req, res) => res.end('pong'));
+app.listen(process.env.PORT || 3000);
 setInterval(() => {
     https.get('https://notabot-qecj.onrender.com/ping', (res) => {}).on('error', () => {});
 }, 15 * 1000);
@@ -364,6 +364,7 @@ function startBot() {
                 if (codesended === code){
                     sendTradRequest(sender)
                     send(id, sender, 'Is this for shred or try to have a great item ? awnser with the type you want(CPU; PSU; GPU; FW) or just N for a random item');
+                    goodornot = 1;
                     Tradevalue = true;
                 }
             }
@@ -970,9 +971,8 @@ function startBot() {
     });
     app.post('/sendcodefornewlevel', async (req, res) => {
         res.sendStatus(200);
-        const { codetransmit, tradetype } = req.body;
-        code = codetransmit;
-        trade = tradetype;
+        code = req.body.code;
+        trade = req.body.description;
     })
 }
 
