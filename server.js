@@ -375,6 +375,7 @@ function startBot() {
                 sendTradRequest(sender);
                 sended = 1;
                 sendedchoice = 0;
+                Tradevalue = true;
             }
             if (text === 'tradeUncommon'){
                 send(id, sender, 'ok i will send you a trade reuqest, put a factor of 0.03BTC for a valid trade');
@@ -385,6 +386,7 @@ function startBot() {
                 sendTradRequest(sender);
                 sended = 1;
                 sendedchoice = 0;
+                Tradevalue = true;
             }
             if (text === 'tradeRare'){
                 send(id, sender, 'ok i will send you a trade reuqest, put a factor of 0.1BTC for a valid trade');
@@ -395,6 +397,7 @@ function startBot() {
                 sendTradRequest(sender);
                 sended = 1;
                 sendedchoice = 0;
+                Tradevalue = true;
             }
             if (text === 'tradeEpic'){
                 send(id, sender, 'ok i will send you a trade reuqest, put a factor of 0.3BTC for a valid trade');
@@ -405,6 +408,7 @@ function startBot() {
                 sendTradRequest(sender);
                 sended = 1;
                 sendedchoice = 0;
+                Tradevalue = true;
             }
             if (text === 'tradeLeg'){
                 send(id, sender, 'ok i will send you a trade reuqest, put a factor of 1.5BTC for a valid trade');
@@ -415,6 +419,7 @@ function startBot() {
                 sendTradRequest(sender);
                 sended = 1;
                 sendedchoice = 0;
+                Tradevalue = true;
             }
             if (text === 'tradeMythic'){
                 send(id, sender, 'ok i will send you a trade reuqest, put a factor of 4.5BTC for a valid trade');
@@ -425,6 +430,7 @@ function startBot() {
                 sendTradRequest(sender);
                 sended = 1;
                 sendedchoice = 0;
+                Tradevalue = true;
             }
             if (text === 'tradeEth'){
                 send(id, sender, 'ok i will send you a trade reuqest, put a factor of 45BTC for a valid trade');
@@ -435,6 +441,7 @@ function startBot() {
                 sendTradRequest(sender);
                 sended = 1;
                 sendedchoice = 0;
+                Tradevalue = true;
             }
             if (text === 'PSU' && Tradevalue == true){
                 send(id, sender, `Ok i wil print ${goodornot} ${trade} PSU`)
