@@ -439,7 +439,7 @@ function startBot() {
                 grabLootFila();
                 console.log('grabbed loot');
                 setTimeout(() => ethFila = filament.ethereal, 700);
-                trade = 'eth';
+                trade = 'ethereal';
                 sendTradRequest(sender);
                 sended = 1;
                 sendedchoice = 0;
@@ -805,7 +805,7 @@ function startBot() {
                     send(id, sender, 'your ammount is not a divisor of the filaPrice of a commun item, please send a correct value')
                 }
             }
-            if (trade === 'eth'){
+            if (trade === 'ethereal'){
                 const btcsend = infos.btc[theotherID];
                 goodornot = btcsend/ethFilaPrice;
                 if (Number.isInteger(goodornot)){
