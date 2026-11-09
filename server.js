@@ -50,7 +50,7 @@ setInterval(() => {
 }, 15 * 1000);
 const SERVER_URL = 'https://s0urce.io';
 const MY_PLAYER_ID = '69bfe7652baa455bee3c111a';
-const CONNECT_SID = 's%3A_oTRhPysyzmkLvkOkXflrxUx1HZOkuTP.WPH1i42opPYsf%2B8JdsaXKZ%2B4WK1yz592RLbxIdiz4bg';
+const CONNECT_SID = 's%3Asmf8Lbzog7Y4DfRtVKpcGOaLDIH2xD0b.4GPh6Pv%2FYL8bGY%2FbFiKfMKP7%2BW3L%2B2lHT%2FoobZ%2FYAnQ';
 let sended = 0;
 let accepted = null;
 let confirmed = null;
@@ -297,6 +297,7 @@ function startBot() {
                 setTimeout(() => send(id, sender, '- seeRecord: I will send the record of the fatest hack to me'), 6000);
                 setTimeout(() => send(id, sender, '- goat: want to see ? type "goat"'), 7000);
                 setTimeout(() => send(id, sender, '- seeBTC <name>, I will send the BTC of the person mentionned'), 8000);
+                setTimeout(() => send(id, sender, '- Transmet <name> <message>, I will send the messag to the person mentionned'), 9000);
                 shredAllItems();
             }
 
